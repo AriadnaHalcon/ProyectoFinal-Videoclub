@@ -1,0 +1,152 @@
+body {
+    background-color: #FADADD; 
+    font-family: 'Poppins', sans-serif;  
+}
+
+.navbar {
+    background-color: #F1C6D1;
+}
+
+.navbar-brand, .nav-link {
+    color: #5A3F50 !important; 
+    font-weight: bold;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #D28B7A !important; 
+}
+
+img {
+    max-width: 100%; 
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; 
+}
+
+.container-welcome {
+    background-color: #FFF0F5; /* Color suave pastel */
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 25px;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    width: 100%;
+    
+}
+
+table td {
+    vertical-align: middle; 
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: center;
+    height: 50px;  
+    vertical-align: middle;
+}
+
+table th {
+    background-color: #F1C6D1; 
+    color: #5A3F50;
+}
+
+table tbody tr {
+    background-color: #FFF;
+}
+
+table tbody tr:hover {
+    background-color: #ffb2b2;
+}
+.action-buttons {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    /* align-items: center; */
+    gap: 10px; 
+    text-align: center;
+}
+
+.action-buttons button {
+    padding: 5px 10px;
+    font-size: 14px;
+    height: 40px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    display: inline-flex; 
+    margin: 0; 
+    height: auto; 
+    padding: 5px 10px;
+}
+
+/* Estilo para los Sweet Alerts y los modals*/
+.swal2-popup {
+    font-family: 'Poppins', sans-serif !important;
+    background-color: #FADADD;
+    color: #5A3F50;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.swal2-title {
+    font-weight: bold;
+    color: #5A3F50;
+}
+
+.swal2-confirm {
+    background-color: #D28B7A;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.swal2-confirm:hover {
+    background-color: #F1C6D1;
+}
+
+.swal2-cancel {
+    background-color: #F1C6D1;
+    color: #5A3F50;
+    border: none;
+}
+
+.swal2-cancel:hover {
+    background-color: #D28B7A;
+}
+
+.modal-content {
+    background-color: #FADADD;
+    border-radius: 10px;
+    padding: 20px;
+    border: none;
+}
+
+.modal-header {
+    background-color: #F1C6D1;
+    color: #5A3F50;
+    border-bottom: 2px solid #D28B7A;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.modal-body {
+    font-size: 14px;
+    color: #5A3F50;
+}
+
+.modal-footer {
+    background-color: #F1C6D1;
+    display: flex;
+    justify-content: space-between;
+}
+
