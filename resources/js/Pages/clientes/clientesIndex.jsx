@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, router } from '@inertiajs/react';
 import Swal from 'sweetalert2';
-import ModalAgregarCliente from '@/Components/ModalAgregarCliente';
-import ModalEditarCliente from '@/Components/ModalEditarCliente';
+import ModalAgregarCliente from '@/components/ModalAgregarCliente';
+import ModalEditarCliente from '@/components/ModalEditarCliente';
 import AppLayout from '@/Layouts/AppLayout';
 
 ClientesIndex.layout = (page) => <AppLayout>{page}</AppLayout>;

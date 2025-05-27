@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import NavbarUsuario from '@/Components/NavbarUsuario';
+import NavbarUsuario from '@/components/NavbarUsuario';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { CarritoProvider } from '@/Components/Carrito';
-import ModalTarifa from '@/Components/ModalTarifa';
+import { CarritoProvider } from '@/components/Carrito';
+import ModalTarifa from '@/components/ModalTarifa';
 import { usePage, useForm } from '@inertiajs/react';
 import Swal from 'sweetalert2';
-import Footer from '@/Components/Footer';
+import Footer from '@/components/Footer';
 
 export default function AppLayoutUsuario({ children }) {
   const { tarifaActual, tarifas, success, error } = usePage().props;

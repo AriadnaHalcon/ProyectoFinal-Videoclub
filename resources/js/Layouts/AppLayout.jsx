@@ -1,8 +1,8 @@
 import React from 'react';
-import Navbar from '@/Components/Navbar';
+import Navbar from '@/components/Navbar';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { CarritoProvider } from '@/Components/Carrito';
-import Footer from '@/Components/Footer';
+import { CarritoProvider } from '@/components/Carrito';
+import Footer from '@/components/Footer';
 
 export default function AppLayout({ children }) {
   return (

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { usePage, useForm } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
-import NavbarUsuario from '@/Components/NavbarUsuario';
-import ModalTarifa from '@/Components/ModalTarifa';
-import { useCarrito } from '@/Components/Carrito';
+import NavbarUsuario from '@/components/NavbarUsuario';
+import ModalTarifa from '@/components/ModalTarifa';
+import { useCarrito } from '@/components/Carrito';
 import AppLayoutUsuario from '@/Layouts/AppLayoutUsuario';
 import Swal from 'sweetalert2';
 

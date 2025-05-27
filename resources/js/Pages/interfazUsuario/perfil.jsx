@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { usePage, useForm, router } from '@inertiajs/react';
-import NavbarUsuario from '@/Components/NavbarUsuario';
-import ModalTarifa from '@/Components/ModalTarifa';
+import NavbarUsuario from '@/components/NavbarUsuario';
+import ModalTarifa from '@/components/ModalTarifa';
 import Swal from 'sweetalert2';
-import { useCarrito } from '@/Components/Carrito';
+import { useCarrito } from '@/components/Carrito';
 import AppLayoutUsuario from '@/Layouts/AppLayoutUsuario';
 
 const Perfil = () => {

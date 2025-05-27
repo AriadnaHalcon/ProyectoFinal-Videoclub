@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { usePage, useForm } from '@inertiajs/react';
-import TarjetaPelicula from '@/Components/TarjetaPelicula';
-import { useCarrito } from '@/Components/Carrito';
-import NavbarUsuario from '@/Components/NavbarUsuario';
+import TarjetaPelicula from '@/components/TarjetaPelicula';
+import { useCarrito } from '@/components/Carrito';
+import NavbarUsuario from '@/components/NavbarUsuario';
 import Swal from 'sweetalert2';
 import { useEffect } from 'react';
 import { router } from '@inertiajs/react';
-import SearchBar from '@/Components/SearchBar';
+import SearchBar from '@/components/SearchBar';
 import AppLayoutUsuario from '@/Layouts/AppLayoutUsuario';
 
 const Peliculas = () => {

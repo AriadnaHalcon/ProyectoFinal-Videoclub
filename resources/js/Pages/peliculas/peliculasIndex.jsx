@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import Swal from 'sweetalert2';
-import ModalAgregarPelicula from '@/Components/ModalAgregarPelicula';
-import ModalEditarPelicula from '@/Components/ModalEditarPelicula';
+import ModalAgregarPelicula from '@/components/ModalAgregarPelicula';
+import ModalEditarPelicula from '@/components/ModalEditarPelicula';
 import AppLayout from '@/Layouts/AppLayout';
-import SearchBar from '@/Components/SearchBar';
+import SearchBar from '@/components/SearchBar';
 
 PeliculasIndex.layout = (page) => <AppLayout>{page}</AppLayout>;
 

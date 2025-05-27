@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, router } from '@inertiajs/react';
 import Swal from 'sweetalert2';
-import ModalAgregarAlquiler from '@/Components/ModalAgregarAlquiler';
-import ModalEditarAlquiler from '@/Components/ModalEditarAlquiler';
+import ModalAgregarAlquiler from '@/components/ModalAgregarAlquiler';
+import ModalEditarAlquiler from '@/components/ModalEditarAlquiler';
 import AppLayout from '@/Layouts/AppLayout';
 
 AlquileresIndex.layout = (page) => <AppLayout>{page}</AppLayout>;

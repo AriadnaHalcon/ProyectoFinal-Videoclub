@@ -1,12 +1,12 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import TextInput from '@/Components/TextInput';
+import Checkbox from '@/components/Checkbox';
+import InputError from '@/components/InputError';
+import InputLabel from '@/components/InputLabel';
+import TextInput from '@/components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm, router } from '@inertiajs/react';  // <--- Importa router aquí
 
 import { useState } from 'react';
-import PrimaryButton from '@/Components/PrimaryButton';
+import PrimaryButton from '@/components/PrimaryButton';
 
 export default function Login() {
     const { data, setData, post, processing, errors, reset } = useForm({

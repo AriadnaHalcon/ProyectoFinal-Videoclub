@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import Swal from 'sweetalert2';
-import ModalAgregarTarifa from '@/Components/ModalAgregarTarifa';
-import ModalEditarTarifa from '@/Components/ModalEditarTarifa';
+import ModalAgregarTarifa from '@/components/ModalAgregarTarifa';
+import ModalEditarTarifa from '@/components/ModalEditarTarifa';
 import AppLayout from '@/Layouts/AppLayout';
 
 TarifasIndex.layout = (page) => <AppLayout>{page}</AppLayout>;

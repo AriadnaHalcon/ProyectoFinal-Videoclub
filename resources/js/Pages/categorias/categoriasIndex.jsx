@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import Swal from 'sweetalert2';
-import ModalAgregarCategoria from '@/Components/ModalAgregarCategoria';
-import ModalEditarCategoria from '@/Components/ModalEditarCategoria';
+import ModalAgregarCategoria from '@/components/ModalAgregarCategoria';
+import ModalEditarCategoria from '@/components/ModalEditarCategoria';
 import AppLayout from '@/Layouts/AppLayout';
 
 CategoriasIndex.layout = (page) => <AppLayout>{page}</AppLayout>;
