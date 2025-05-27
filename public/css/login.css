@@ -1,0 +1,78 @@
+body {
+    background-color: #FADADD; 
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    color: black;
+    font-weight: bold;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    background-color: #FFF0F5;
+    border-radius: 20px;
+    padding: 40px; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px; 
+    height: auto; 
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.input-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 10px;
+    padding-right: 40px; /* Espacio para el ícono */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.input-container .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 74%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+    padding: 12px; /* Aumenta el tamaño del botón */
+    background-color: #D28B7A;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #C76C5B;
+}
+
+a {
+    color: #D28B7A;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #C76C5B;
+}
