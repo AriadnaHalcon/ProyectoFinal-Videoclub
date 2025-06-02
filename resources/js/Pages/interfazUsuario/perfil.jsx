@@ -121,7 +121,6 @@ const Perfil = () => {
 
   // Si no hay datos de perfil, mostrar cargando perfil
   if (!form.dni && !form.nombre && !form.email && !form.direccion && !form.telefono) {
-    console.log(Perfil);
     return <p>Cargando perfil...</p>;
   }
 

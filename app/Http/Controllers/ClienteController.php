@@ -164,7 +164,6 @@ class ClienteController extends Controller
     {
         $user = Auth::user();
         $cliente = \App\Models\Cliente::where('user_id', $user->id)->first();
-        dd($cliente);
 
         if (!$cliente) {
             return response()->json(['error' => 'Cliente no encontrado'], 404);
@@ -182,9 +181,7 @@ class ClienteController extends Controller
     public function verVistaPerfil()
     {
         $user = Auth::user();
-        dd($user);
         $cliente = \App\Models\Cliente::where('user_id', $user->id)->first();
-        dd($cliente);
         $tarifaActual = $cliente ? $cliente->tarifa : null;
         $tarifas = \App\Models\Tarifa::all();
         return Inertia::render('interfazUsuario/perfil', [
