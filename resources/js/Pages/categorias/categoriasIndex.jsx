@@ -38,7 +38,7 @@ export default function CategoriasIndex({ categorias, error, success }) {
   const handleDelete = (id) => {
     console.log('handleDelete ejecutado para ID:', id);
 
-    // Close Bootstrap modals if open
+    // Cerrar los modales si están abiertos
     document.querySelectorAll('.modal').forEach(modal => {
       bootstrap.Modal.getInstance(modal)?.hide();
     });

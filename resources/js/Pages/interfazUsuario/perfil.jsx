@@ -13,7 +13,7 @@ const Perfil = () => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Formulario de perfil
+  // Formulario para el perfil
   const [form, setForm] = useState({
     dni: cliente?.dni || '',
     nombre: cliente?.nombre || '',
@@ -35,10 +35,9 @@ const Perfil = () => {
       idTarifa = tarifas[0].id_tarifa;
     }
     setData('id_tarifa', idTarifa);
-    // Ya no se usa window.bootstrap.Modal, el layout gestiona el modal
   };
 
-  // Manejo de cambio de tarifa
+  // Cambio de tarifa
   const handleTarifaSubmit = e => {
     e.preventDefault();
     Swal.fire({
@@ -120,8 +119,9 @@ const Perfil = () => {
   };
 
 
-  // Si no hay datos de perfil, mostrar cargando
+  // Si no hay datos de perfil, mostrar cargando perfil
   if (!form.dni && !form.nombre && !form.email && !form.direccion && !form.telefono) {
+    console.log(Perfil);
     return <p>Cargando perfil...</p>;
   }
 

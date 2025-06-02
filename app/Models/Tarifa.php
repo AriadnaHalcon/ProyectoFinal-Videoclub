@@ -18,6 +18,7 @@ class Tarifa extends Model
         'descuento',
     ];
 
+    // Relación con la tabla 'clientes'
     public function clientes()
     {
         return $this->hasMany(Cliente::class, 'id_tarifa', 'id_tarifa'); 

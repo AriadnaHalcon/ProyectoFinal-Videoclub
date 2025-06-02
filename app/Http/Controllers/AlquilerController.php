@@ -125,14 +125,13 @@ class AlquilerController extends Controller
         $nuevoEstado = $request->estado;
 
         if ($estadoAnterior == 'Pendiente' && $nuevoEstado == 'Devuelto') {
-            // Incrementar el stock si el estado cambia de pendiente a devuelto
+            // Incrementa el stock
             $pelicula->stock += 1;
         } elseif ($estadoAnterior == 'Devuelto' && $nuevoEstado == 'Pendiente') {
-            // Disminuir el stock si el estado cambia de devuelto a pendiente
+            // Disminuye el stock
             $pelicula->stock -= 1;
         }
 
-        // Guarda los cambios
         $pelicula->save();
 
         return redirect()->route('alquileres.index')->with('success', 'Alquiler actualizado correctamente.');
@@ -207,7 +206,7 @@ class AlquilerController extends Controller
                     ]);
                 }
             } else if ($item['tipo'] === 'comprar') {
-                // Descuenta stock, no crea alquiler ni aplica descuento
+                // Descuenta stock si la opcion es "Comprar
                 $pelicula->stock -= $item['cantidad'];
                 $pelicula->save();
             }

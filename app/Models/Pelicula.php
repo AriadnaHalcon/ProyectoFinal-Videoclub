@@ -24,16 +24,19 @@ class Pelicula extends Model
         'precio',
     ];
 
+    //Relación con la tabla 'categorias'.
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'id_categoria', 'id_categoria');
     }
 
+    // Relación con la tabla 'tarifas'.
     public function tarifa()
     {
         return $this->belongsTo(Tarifa::class);
     }
 
+    // Relación con la tabla 'alquileres'.
     public function alquileres()
     {
         return $this->hasMany(Alquiler::class, 'id_pelicula');

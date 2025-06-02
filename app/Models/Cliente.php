@@ -10,7 +10,7 @@ class Cliente extends Model
     protected $table = 'clientes';
     protected $primaryKey = 'dni';
     public $incrementing = false; 
-    protected $fillable = ['dni', 'nombre', 'direccion', 'telefono', 'email', 'fecha_registro', 'id_tarifa'];
+    protected $fillable = ['dni', 'nombre', 'direccion', 'telefono', 'email', 'fecha_registro', 'id_tarifa', 'user_id'];
     public $timestamps = false;
 
     public function tarifa()

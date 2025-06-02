@@ -91,7 +91,6 @@ return (
                 </tbody>
             </table>
 
-            {/* Botones debajo de la tabla */}
             <div className="d-flex justify-content-start mt-4">
                 <button
                     id="abrirModalAgregarCliente"

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TarifaController extends Controller
 {
-    // Mostrar todas las tarifas
+    // Mostrar lista de tarifas
     public function index()
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -24,7 +24,7 @@ class TarifaController extends Controller
         ]);
     }
 
-    // Mostrar el formulario para crear una nueva tarifa
+    // Mostrar el formulario para crear nueva tarifa
     public function create()
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -33,7 +33,7 @@ class TarifaController extends Controller
         return view('tarifas.create');
     }
 
-    // Guardar una nueva tarifa
+    // Guardar nueva tarifa
     public function store(Request $request)
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -62,7 +62,7 @@ class TarifaController extends Controller
         return view('tarifas.edit', compact('tarifa'));
     }
 
-    // Actualizar una tarifa existente
+    // Actualizar tarifa existente
     public function update(Request $request, $id)
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -90,7 +90,7 @@ class TarifaController extends Controller
         try {
             $tarifa = Tarifa::findOrFail($id);
 
-            // Verificar si la tarifa está asignada a algún cliente
+            // Comprueba si la tarifa está asignada a algún cliente
             if ($tarifa->clientes()->exists()) {
                 return Inertia::render('tarifas/tarifasIndex', [
                     'tarifas' => Tarifa::all(),
@@ -131,7 +131,7 @@ class TarifaController extends Controller
         // Cargar el HTML en Dompdf
         $dompdf->loadHtml($pdfContent);
 
-        // (Opcional) Configurar el tamaño del papel y la orientación
+        // Configurar el tamaño del papel y la orientación
         $dompdf->setPaper('A4', 'landscape');
 
         // Renderizar el PDF

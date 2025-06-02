@@ -14,7 +14,7 @@ export default function Login() {
         password: '',
     });
 
-    // Estado para mostrar/ocultar la contraseña
+    // mostrar/ocultar la contraseña
     const [showPassword, setShowPassword] = useState(false);
 
     // Manejo del formulario
@@ -23,13 +23,12 @@ export default function Login() {
         post(route('login'), {
             onFinish: () => reset('password'),
             onError: () => {
-                // Forzar scroll arriba para ver errores
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             },
         });
     };
 
-    // Alternar la visibilidad de la contraseña
+    // Alterna la visibilidad de la contraseña
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -43,10 +42,6 @@ export default function Login() {
             </Head>
             <h1 style={{ textAlign: 'center' }}>Login</h1>
             <form onSubmit={submit}>
-                {/* Mostrar error general del backend (por ejemplo, credenciales incorrectas) */}
-                {/* {errors.message && (
-                    <div style={{ color: 'red', marginBottom: 12, textAlign: 'center', fontWeight: 'bold' }}>{errors.message}</div>
-                )} */}
 
                 <div className="input-container" >
                     <label htmlFor="email">Email:</label>

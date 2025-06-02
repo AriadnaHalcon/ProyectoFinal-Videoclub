@@ -29,39 +29,41 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-        'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        'dni' => 'required|string|unique:clientes',
-        'direccion' => 'required|string|max:255',
-        'telefono' => 'required|string|max:15',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'dni' => 'required|string|unique:clientes',
+            'direccion' => 'required|string|max:255',
+            'telefono' => 'required|string|max:15',
+        ]);
 
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'rol' => 'usuario',
-        'dni' => $request->dni,
-    ]);
+        // Crear usuario
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'rol' => 'usuario',
+        ]);
 
-    $tarifaStandard = \App\Models\Tarifa::where('nombre', 'Estándar')->first();
+        // Obtener tarifa Estándar por defecto
+        $tarifaStandard = \App\Models\Tarifa::where('nombre', 'Estándar')->first();
 
-    \App\Models\Cliente::create([
-        'dni' => $request->dni,
-        'nombre' => $request->name,
-        'direccion' => $request->direccion,
-        'telefono' => $request->telefono,
-        'email' => $request->email,
-        'id_tarifa' => $tarifaStandard ? $tarifaStandard->id_tarifa : null,
-        'user_id' => $user->id,
-    ]);
+        // Crear cliente vinculado con users
+        \App\Models\Cliente::create([
+            'dni' => $request->dni,
+            'nombre' => $request->name,
+            'direccion' => $request->direccion,
+            'telefono' => $request->telefono,
+            'email' => $request->email,
+            'id_tarifa' => $tarifaStandard ? $tarifaStandard->id_tarifa : null,
+            'user_id' => $user->id, 
+        ]);
 
-    event(new Registered($user));
-    //Auth::login($user);
+        event(new Registered($user));
 
-    return redirect()->route('login');
-}
+        return redirect()->route('login');
+    }
+
 }

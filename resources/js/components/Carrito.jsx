@@ -135,7 +135,7 @@ const Carrito = ({ onRemove, onClear, tarifaActual }) => {
           </>
         )}
       </div>
-      {/* Footer del modal con los botones */}
+      
       <div className="modal-footer" style={{ backgroundColor: '#F1C6D1', display: 'flex', justifyContent: 'space-between', borderBottomLeftRadius: 10, borderBottomRightRadius: 10, marginTop: 16 }}>
         <button
           onClick={handlePagar}

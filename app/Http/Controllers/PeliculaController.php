@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PeliculaController extends Controller
 {
-    // Método para listar todas las películas
+    // Mostrar lista de películas
     public function index(Request $request)
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -33,7 +33,7 @@ class PeliculaController extends Controller
                 ->orWhereHas('categoria', function ($query) use ($search) {
                     $query->where('nombre', 'like', "%{$search}%");
                 });
-        })->with('categoria')->get(); // Parámetro search para la consulta
+        })->with('categoria')->get(); // Parámetro search para la barra de búsqueda
 
         $categorias = Categoria::all();
 
@@ -45,7 +45,7 @@ class PeliculaController extends Controller
     }
 
 
-    // Mostrar formulario para crear una nueva película
+    // Mostrar formulario para crear nueva película
     public function create()
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -55,7 +55,7 @@ class PeliculaController extends Controller
         return view('peliculas.create', compact('categorias'));
     }
 
-    // Guardar una nueva película en la base de datos
+    // Guardar nueva película en la base de datos
     public function store(Request $request)
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -93,7 +93,7 @@ class PeliculaController extends Controller
         return view('peliculas.edit', compact('pelicula', 'categorias'));
     }
 
-    // Actualizar una película en la base de datos
+    // Actualizar película en la base de datos
     public function update(Request $request, $id)
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -142,7 +142,7 @@ class PeliculaController extends Controller
         if (Auth::user()->rol !== 'administrador') {
         abort(403, 'No tienes permiso para acceder aquí.');
         }
-        // Obtener los datos que se van a mostrar en el PDF
+        // Obtener los datos que se mostrarán en el PDF
         $peliculas = Pelicula::all();
         $categorias = Categoria::all();
 

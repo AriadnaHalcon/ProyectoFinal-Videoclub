@@ -36,11 +36,11 @@ export default function ModalEditarCliente({ tarifas }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!dni) {
-      console.error('DNI no definido'); // Depuración
+      console.error('DNI no definido');
       return;
     }
   
-    console.log('Enviando datos:', data); // Verifica los datos enviados
+    console.log('Enviando datos:', data);
   
     Swal.fire({
       title: 'Guardando...',
@@ -55,7 +55,7 @@ export default function ModalEditarCliente({ tarifas }) {
   
     put(route('clientes.update', dni), {
       onSuccess: () => {
-        console.log('Cambios guardados con éxito'); // Depuración
+        console.log('Cambios guardados con éxito'); 
         Swal.fire({
           title: '¡Guardado!',
           text: 'Los cambios se han guardado correctamente.',
@@ -69,7 +69,7 @@ export default function ModalEditarCliente({ tarifas }) {
         modal.hide();
       },
       onError: (error) => {
-        console.error('Error al guardar los cambios:', error); // Depuración
+        console.error('Error al guardar los cambios:', error); 
         Swal.fire({
           title: 'Error',
           text: 'Hubo un problema al guardar los cambios.',

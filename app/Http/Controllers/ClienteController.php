@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cliente; 
 use App\Models\Tarifa;
+use App\Models\User;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Inertia\Inertia;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClienteController extends Controller
 {
-    // Mostrar el listado de clientes
+    // Mostrar listado de clientes
     public function index()
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -31,7 +32,7 @@ class ClienteController extends Controller
         ]);
     }
 
-    // Mostrar formulario para crear un cliente
+    // Mostrar formulario para crear cliente
     public function create()
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -41,7 +42,7 @@ class ClienteController extends Controller
         return view('clientes.create', compact('tarifas'));
     }
 
-    // Guardar un nuevo cliente
+    // Guardar nuevo cliente
     public function store(Request $request)
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -61,7 +62,7 @@ class ClienteController extends Controller
         $validated['id_tarifa'] = $validated['id_tarifa'] ?? $tarifaStandard->id_tarifa;
 
         try {
-            // Crear el cliente en la base de datos
+            // Crear cliente en la base de datos
             $cliente = Cliente::create($validated);
     
             return redirect()->route('clientes.index')->with('success', 'Cliente creado correctamente.');
@@ -70,7 +71,7 @@ class ClienteController extends Controller
         }
     }
 
-    // Mostrar formulario para editar un cliente
+    // Mostrar formulario para editar cliente
     public function edit($dni)
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -80,7 +81,7 @@ class ClienteController extends Controller
         return response()->json($cliente);
     }
 
-    // Actualizar los datos de un cliente
+    // Actualizar los datos del cliente
     public function update(Request $request, $dni)
     {
         if (Auth::user()->rol !== 'administrador') {
@@ -95,17 +96,18 @@ class ClienteController extends Controller
         ]);
 
         try {
-            $cliente = Cliente::findOrFail($dni); // Buscar cliente por su DNI
+            $cliente = Cliente::findOrFail($dni); // Busca cliente por su DNI
 
             if (!$cliente->tarifa) {
                 $tarifaStandard = Tarifa::where('nombre', 'Estándar')->firstOrFail();
 
-                // Asignar la tarifa estándar si no hay tarifa asignada
+                // Asigna la tarifa estándar si no hay tarifa asignada
                 $cliente->id_tarifa = $tarifaStandard->id_tarifa;
             }
 
             $cliente->fill($request->all()); 
-            $cliente->save(); // Guardar cliente
+            $cliente->save();
+
 
             return redirect()->route('clientes.index')->with('success', 'Cliente actualizado exitosamente.');
         } catch (\Exception $e) {
@@ -148,7 +150,7 @@ class ClienteController extends Controller
         // Cargar el HTML en Dompdf
         $dompdf->loadHtml($pdfContent);
 
-        // Configurar el tamaño del papel y la orientación
+        // Configurar el tamaño del papel y la orentación
         $dompdf->setPaper('A4', 'landscape');
 
         // Renderizar el PDF
@@ -162,6 +164,7 @@ class ClienteController extends Controller
     {
         $user = Auth::user();
         $cliente = \App\Models\Cliente::where('user_id', $user->id)->first();
+        dd($cliente);
 
         if (!$cliente) {
             return response()->json(['error' => 'Cliente no encontrado'], 404);
@@ -179,7 +182,9 @@ class ClienteController extends Controller
     public function verVistaPerfil()
     {
         $user = Auth::user();
+        dd($user);
         $cliente = \App\Models\Cliente::where('user_id', $user->id)->first();
+        dd($cliente);
         $tarifaActual = $cliente ? $cliente->tarifa : null;
         $tarifas = \App\Models\Tarifa::all();
         return Inertia::render('interfazUsuario/perfil', [
@@ -210,8 +215,9 @@ class ClienteController extends Controller
 
         $cliente->update($validated);
 
-        // Si el usuario tiene relación con User, actualiza también el nombre en users
+        // Actualiza también el nombre en users
         if ($user) {
+            /** @var \App\Models\User $user  */  // <-- Comentario para que $user->save() no me dé error
             $user->name = $validated['nombre'];
             $user->save();
         }
@@ -219,7 +225,7 @@ class ClienteController extends Controller
         return response()->json(['mensaje' => 'Perfil actualizado correctamente.']);
     }
 
-// Mostrar la tarifa actual y las opciones disponibles
+// Muestra la tarifa actual y las opciones disponibles
     public function verTarifa()
     {
         $user = Auth::user();
@@ -241,8 +247,7 @@ class ClienteController extends Controller
         ]);
     }
 
-    // Cambiar la tarifa del cliente
- 
+    // Cambiar la tarifa
     public function cambiarTarifa(Request $request)
     {
         $user = Auth::user();

@@ -74,7 +74,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'rol' => 'usuario', 
-            'dni' => $request->dni,
+            
         ]);
 
         $tarifaStandard = Tarifa::where('nombre', 'Estándar')->first();
@@ -85,7 +85,8 @@ class AuthController extends Controller
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
             'email' => $request->email,
-            'id_tarifa' => $tarifaStandard ? $tarifaStandard->id_tarifa : null,    
+            'id_tarifa' => $tarifaStandard ? $tarifaStandard->id_tarifa : null,
+            'user_id' => $user->id,  
         ]);
 
         return redirect()->route('login');

@@ -47,7 +47,7 @@ export default function ModalAgregarPelicula({ categorias }) {
           modalInstance.hide();
         }
 
-        // Esperar a que termine la animación y limpiar backdrop
+        // limpiar el modal y eliminar el backdrop
         setTimeout(() => {
           document.querySelectorAll('.modal-backdrop').forEach((b) => b.remove());
           document.body.classList.remove('modal-open');

@@ -44,7 +44,7 @@ export default function ModalAgregarAlquiler({ clientes, peliculas }) {
           modalInstance.hide();
         }
 
-        // Esperar a que termine la animación y limpiar backdrop
+        // Limpiar el modal y eliminar el backdrop
         setTimeout(() => {
           document.querySelectorAll('.modal-backdrop').forEach((b) => b.remove());
           document.body.classList.remove('modal-open');

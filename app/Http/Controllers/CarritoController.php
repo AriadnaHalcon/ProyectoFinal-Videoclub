@@ -71,11 +71,9 @@ class CarritoController extends Controller
         foreach ($datos['items'] as $item) {
             // Guardar cada elemento en la tabla carrito con dni_cliente = usuario logueado
             \App\Models\Carrito::create([
-                'dni_cliente' => $user->dni, // o el campo que use tu usuario para identificarlo
+                'dni_cliente' => $user->dni,
                 'id_pelicula' => $item['id_pelicula'],
                 'cantidad' => $item['cantidad'],
-                // si quieres guardar tipo (alquilar/comprar), deberías agregar ese campo en la tabla carrito
-                // 'tipo' => $item['tipo'],
             ]);
         }
 

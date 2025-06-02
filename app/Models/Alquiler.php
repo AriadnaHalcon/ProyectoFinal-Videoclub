@@ -11,8 +11,6 @@ class Alquiler extends Model
 
     protected $table = 'alquileres';
     protected $primaryKey = 'id_alquiler';
-
-    // Desactivar timestamps si no los necesitas
     public $timestamps = false;
 
     protected $fillable = [
@@ -31,14 +29,13 @@ class Alquiler extends Model
         return $this->belongsTo(Pelicula::class, 'id_pelicula');
     }
 
-    // Método para calcular el precio con descuento
+    // Calcular el precio con descuento
     public static function calcularPrecioConDescuento($clienteId, $peliculaId)
     {
-        $cliente = Cliente::find($clienteId); // Obtener cliente por su DNI
-        $pelicula = Pelicula::find($peliculaId); // Obtener película por su ID
-        $tarifa = $cliente->tarifa; // Obtener la tarifa del cliente
+        $cliente = Cliente::find($clienteId); 
+        $pelicula = Pelicula::find($peliculaId); 
+        $tarifa = $cliente->tarifa; 
 
-        // Calcular el precio con el descuento aplicado
         $precioConDescuento = $pelicula->precio - ($pelicula->precio * ($tarifa->descuento / 100));
         return $precioConDescuento;
     }

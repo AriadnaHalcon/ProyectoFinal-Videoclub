@@ -115,7 +115,7 @@ class CategoriaController extends Controller
         // Cargar el HTML en Dompdf
         $dompdf->loadHtml($pdfContent);
 
-        // (Opcional) Configurar el tamaño del papel y la orientación
+        // Configurar el tamaño del papel y la orientación
         $dompdf->setPaper('A4', 'landscape');
 
         // Renderizar el PDF

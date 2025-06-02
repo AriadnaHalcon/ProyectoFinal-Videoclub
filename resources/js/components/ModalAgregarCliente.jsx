@@ -14,7 +14,7 @@ export default function ModalAgregarCliente({ tarifas }) {
     id_tarifa: tarifas.length ? tarifas[0].id_tarifa : '',
   });
 
-  // Siempre que el modal se cierre, mueve el foco al botón de abrir modal
+  // Maneja el cierre del modal para mover el foco al botón de abrir modal
   useEffect(() => {
     const modalEl = modalRef.current;
     if (!modalEl) return;
@@ -30,14 +30,14 @@ export default function ModalAgregarCliente({ tarifas }) {
     };
   }, []);
 
-  // Espera a que el modal termine de cerrarse antes de continuar (para submit)
+  // Función para cerrar el modal y ejecutar un callback
   const closeModalAndThen = (callback) => {
     const modal = window.bootstrap.Modal.getInstance(modalRef.current);
     if (modal) {
       modalRef.current.addEventListener('hidden.bs.modal', function handler() {
         modalRef.current.removeEventListener('hidden.bs.modal', handler);
 
-        // Limpieza manual igual que en ModalAgregarTarifa.jsx
+        // Limpieza manual del modal y backdrop
         setTimeout(() => {
           document.querySelectorAll('.modal-backdrop').forEach((b) => b.remove());
           document.body.classList.remove('modal-open');
@@ -46,7 +46,7 @@ export default function ModalAgregarCliente({ tarifas }) {
           const opener = document.getElementById('abrirModalAgregarCliente');
           if (opener) opener.focus();
           callback();
-        }, 300); // Espera la animación
+        }, 300); 
       });
       modal.hide();
     } else {
@@ -78,7 +78,7 @@ export default function ModalAgregarCliente({ tarifas }) {
           showConfirmButton: false,
         });
 
-        // Espera a que el modal se cierre antes de resetear el formulario
+        // Espera a que el modal se cierre para resetear el formulario
         closeModalAndThen(() => {
           reset();
         });

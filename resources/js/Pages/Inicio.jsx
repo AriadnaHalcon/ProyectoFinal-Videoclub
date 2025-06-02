@@ -10,7 +10,7 @@ export default function Inicio() {
 
     return (
         <>
-            {/* Usa Helmet para gestionar las etiquetas <head> */}
+            {/* Uso la etiqueta "Helmet" para gestionar las etiquetas <head> */}
             <Helmet>
                 <title>Bienvenido al Videoclub</title>
                 <link

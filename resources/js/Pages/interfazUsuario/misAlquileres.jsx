@@ -53,7 +53,6 @@ const MisAlquileres = () => {
       idTarifa = tarifas[0].id_tarifa;
     }
     setData('id_tarifa', idTarifa);
-    // Ya no se usa window.bootstrap.Modal, el layout gestiona el modal
   };
 
   const handleTarifaSubmit = e => {

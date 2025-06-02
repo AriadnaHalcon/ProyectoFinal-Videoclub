@@ -39,11 +39,11 @@ export default function Register({ tarifas = [] }) {
 
     return (
         <>
-            <head>
+            <Head>
                 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
                 <link href="/css/register.css" rel="stylesheet" />
                 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
-            </head>
+            </Head>
             <div className="form-container">
                 <h1 className="text-center">Register</h1>
                 <form onSubmit={submit}>
@@ -142,7 +142,7 @@ export default function Register({ tarifas = [] }) {
                     </div>
 
                     <div className="input-container">
-                        <InputLabel htmlFor="password" value="Password" />
+                        <InputLabel htmlFor="password" value="Contraseña" />
                         <TextInput
                             id="password"
                             type={showPassword ? 'text' : 'password'}
@@ -160,7 +160,7 @@ export default function Register({ tarifas = [] }) {
                     </div>
 
                     <div className="input-container">
-                        <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                        <InputLabel htmlFor="password_confirmation" value="Confirmar Contraseña" />
                         <TextInput
                             id="password_confirmation"
                             type={showConfirmPassword ? 'text' : 'password'}

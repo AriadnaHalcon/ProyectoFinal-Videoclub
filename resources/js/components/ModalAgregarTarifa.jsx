@@ -36,13 +36,13 @@ export default function ModalAgregarTarifa() {
 
         reset();
 
-        // ⬇️ Cerrar el modal de forma segura
+        // Cerrar el modal de forma segura
         const modalInstance = bootstrap.Modal.getInstance(modalRef.current);
         if (modalInstance) {
           modalInstance.hide();
         }
 
-        // ⬇️ Esperar a que termine animación y limpiar backdrop
+        // Esperar a que termine animación y limpiar backdrop
         setTimeout(() => {
           document.querySelectorAll('.modal-backdrop').forEach((b) => b.remove());
           document.body.classList.remove('modal-open');

@@ -16,7 +16,7 @@ export default function ModalEditarAlquiler({ clientes, peliculas }) {
   useEffect(() => {
     const handler = (e) => {
       const alquiler = e.detail;
-      console.log('Alquiler recibido:', alquiler); // Verifica los datos del alquiler
+      console.log('Alquiler recibido:', alquiler);
       setId(alquiler.id_alquiler);
       setData({
         dni_cliente: alquiler.cliente?.dni || '',

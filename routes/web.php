@@ -20,7 +20,7 @@ Route::get('/', function () {
 // Logout
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-// Dashboard solo para admin
+// Dashboard solo para el admin
 Route::get('/dashboard', function () {
     if (Auth::user()->rol !== 'administrador') {
         abort(403, 'No tienes permiso para acceder aquí.');
@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/mi-tarifa', [ClienteController::class, 'verTarifa'])->name('cliente.verTarifa');
     Route::post('/mi-tarifa', [ClienteController::class, 'cambiarTarifa'])->name('cliente.cambiarTarifa');
 
-    // Rutas de administración (solo admin)
+    // Rutas de administración solo para el admin
     Route::group([
         'middleware' => function ($request, $next) {
             if (Auth::user()->rol !== 'administrador') {

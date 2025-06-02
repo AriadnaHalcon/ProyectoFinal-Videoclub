@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('peliculas', function (Blueprint $table) {
         $table->id();
         $table->string('titulo');
-        $table->foreignId('id_categoria')->constrained('categorias');  // Relaciona con la tabla categorias
+        $table->foreignId('id_categoria')->constrained('categorias');  // Relacion con la tabla categorias
         $table->string('director')->nullable();
         $table->year('anio_estreno')->nullable();
         $table->integer('stock')->default(0);

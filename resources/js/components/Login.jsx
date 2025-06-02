@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';  // Importamos Axios
+import axios from 'axios';  
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [error, setError] = useState(null);  // Para manejar errores de validación
+  const [error, setError] = useState(null); 
 
   const handlePasswordToggle = () => {
     setPasswordVisible(!passwordVisible);
@@ -14,24 +14,22 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Crear el objeto con los datos del formulario
+    // Crea el objeto con los datos del formulario
     const data = { email, password };
 
     try {
-      // Enviar los datos usando Axios
+      // Enviar los datos con Axios
       const response = await axios.post('/login', data, {
         headers: {
           'Content-Type': 'application/json',
-          // Puedes agregar otros encabezados si es necesario, como 'X-CSRF-TOKEN' para seguridad
         }
       });
       
-      // Si la solicitud es exitosa, redirigir o hacer lo que sea necesario
       console.log('Login successful', response.data);
-      window.location.href = '/dashboard';  // Redirigir a un dashboard o página de inicio
+      window.location.href = '/dashboard';
 
     } catch (error) {
-      // Manejar el error
+      // Manejo del error
       if (error.response) {
         setError(error.response.data.message || 'Error en el inicio de sesión');
       } else {
@@ -44,7 +42,7 @@ export default function Login() {
     <div className="form-container">
       <h1 style={{ textAlign: 'center' }}>Login</h1>
       <form onSubmit={handleSubmit}>
-        {/* Email Input */}
+        {/* Input para el Email */}
         <div className="input-container">
           <label htmlFor="email">Email:</label>
           <input
@@ -57,9 +55,9 @@ export default function Login() {
           />
         </div>
 
-        {/* Password Input */}
+        {/* Input de contraseña */}
         <div className="input-container">
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Contraseña:</label>
           <input
             type={passwordVisible ? 'text' : 'password'}
             id="password"
@@ -74,14 +72,14 @@ export default function Login() {
           />
         </div>
 
-        {/* Error message */}
+        {/* Mensaje de error */}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        {/* Submit Button */}
+        {/* Botón de envío */}
         <button type="submit">Login</button>
       </form>
 
-      {/* Register Link */}
+      {/* Link de registro */}
       <div>
         <p>
           ¿No tienes una cuenta? <a href="/register">Regístrate aquí</a>

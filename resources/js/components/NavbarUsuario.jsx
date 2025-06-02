@@ -25,7 +25,6 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
   const toggleDropdown = (e) => {
     e.preventDefault();
     if (dropdownInstanceRef.current) {
-      // Esto alterna la visibilidad del dropdown
       if (dropdownToggleRef.current.getAttribute('aria-expanded') === 'true') {
         dropdownInstanceRef.current.hide();
       } else {

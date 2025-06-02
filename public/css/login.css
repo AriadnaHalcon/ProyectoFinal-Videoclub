@@ -38,7 +38,7 @@ label {
 .input-container input {
     width: 100%;
     padding: 10px;
-    padding-right: 40px; /* Espacio para el ícono */
+    padding-right: 40px; 
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
@@ -54,7 +54,7 @@ label {
 
 button {
     width: 100%;
-    padding: 12px; /* Aumenta el tamaño del botón */
+    padding: 12px;
     background-color: #D28B7A;
     border: none;
     border-radius: 5px;
