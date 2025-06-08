@@ -21,10 +21,16 @@
         @inertia
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var collapseElements = [].slice.call(document.querySelectorAll('.collapse'));
-                collapseElements.map(function (collapseEl) {
-                    return new bootstrap.Collapse(collapseEl, {
+            window.addEventListener('load', function() {
+                if (window.innerWidth >= 992) {
+                    document.querySelectorAll('.navbar-collapse').forEach(function(nav) {
+                        nav.classList.add('show');
+                    });
+                }
+                
+                var collapseElements = [].slice.call(document.querySelectorAll('.collapse:not(.navbar-collapse)'));
+                collapseElements.forEach(function (collapseEl) {
+                    new bootstrap.Collapse(collapseEl, {
                         toggle: false
                     });
                 });

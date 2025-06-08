@@ -9,8 +9,13 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
   const dropdownInstanceRef = useRef(null);
   const { carrito, removeFromCarrito, clearCarrito } = useCarrito();
   const [showCarritoModal, setShowCarritoModal] = useState(false);
-  const [expanded, setExpanded] = useState(window.innerWidth >= 992);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [expanded, setExpanded] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 992);
+
+  // Efecto para inicializar el estado expanded después del montaje
+  useEffect(() => {
+    setExpanded(window.innerWidth >= 992);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
