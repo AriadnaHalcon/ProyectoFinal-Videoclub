@@ -3,13 +3,26 @@ import { Link, usePage } from '@inertiajs/react';
 
 
 
-export default function Navbar() {
-  useEffect(() => {
-    if (window.bootstrap) {
+export default function Navbar() {  useEffect(() => {
+    const initNavbar = () => {
       const collapseEl = document.getElementById('navbarAdminResponsive');
-      if (collapseEl) {
-        const bsCollapse = window.bootstrap.Collapse.getOrCreateInstance(collapseEl);
+      if (collapseEl && window.bootstrap) {
+        const bsCollapse = new window.bootstrap.Collapse(collapseEl, {
+          toggle: false
+        });
+        return bsCollapse;
       }
+      return null;
+    };
+
+    // Intentar inicializar el navbar al cargar el componente
+    let collapse = initNavbar();
+    
+    if (!collapse) {
+      const timer = setTimeout(() => {
+        collapse = initNavbar();
+      }, 100);
+      return () => clearTimeout(timer);
     }
   }, []);
   const { auth } = usePage().props;
@@ -64,12 +77,23 @@ export default function Navbar() {
     }
   };
 
-  return (
-    <nav className="navbar navbar-expand-lg navbar-light navbar-custom">
+  return (    <nav className="navbar navbar-expand-lg navbar-light navbar-custom">
       <div className="container-fluid">
         <Link className="navbar-brand text-pastel-pink" href="/">
           Videoclub
         </Link>
+        <style>
+          {`
+            @media (min-width: 992px) {
+              .navbar-expand-lg .navbar-collapse {
+                display: flex !important;
+              }
+              .navbar-expand-lg .navbar-toggler {
+                display: none;
+              }
+            }
+          `}
+        </style>
         <button
           className="navbar-toggler"
           type="button"
@@ -81,8 +105,7 @@ export default function Navbar() {
           onClick={handleHamburgerClick}
         >
           <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarAdminResponsive">
+        </button>        <div className="navbar-collapse" id="navbarAdminResponsive">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <Link className="nav-link text-pastel-pink" href="/clientes" onClick={() => {

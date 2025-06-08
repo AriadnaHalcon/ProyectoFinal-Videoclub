@@ -9,6 +9,21 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
   const dropdownInstanceRef = useRef(null);
   const { carrito, removeFromCarrito, clearCarrito } = useCarrito();
   const [showCarritoModal, setShowCarritoModal] = useState(false);
+  const [expanded, setExpanded] = useState(window.innerWidth >= 992);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setWindowWidth(width);
+      if (width >= 992) {
+        setExpanded(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Inicializar el dropdown de Bootstrap para el usuario
   useEffect(() => {
@@ -28,12 +43,39 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
   };
 
   useEffect(() => {
-    if (window.bootstrap) {
+    const initNavbar = () => {
+      const collapseEl = document.getElementById('navbarUsuarioResponsive');
+      if (collapseEl && window.bootstrap) {
+        const bsCollapse = new window.bootstrap.Collapse(collapseEl, {
+          toggle: false
+        });
+        
+        // Agregar listeners para actualizar el estado del navbar
+        collapseEl.addEventListener('shown.bs.collapse', () => setExpanded(true));
+        collapseEl.addEventListener('hidden.bs.collapse', () => setExpanded(false));
+        
+        return bsCollapse;
+      }
+      return null;
+    };
+
+    let collapse = initNavbar();
+    
+    if (!collapse) {
+      const timer = setTimeout(() => {
+        collapse = initNavbar();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+
+    // función de limpieza para eliminar los listeners
+    return () => {
       const collapseEl = document.getElementById('navbarUsuarioResponsive');
       if (collapseEl) {
-        const bsCollapse = window.bootstrap.Collapse.getOrCreateInstance(collapseEl);
+        collapseEl.removeEventListener('shown.bs.collapse', () => setExpanded(true));
+        collapseEl.removeEventListener('hidden.bs.collapse', () => setExpanded(false));
       }
-    }
+    };
   }, []);
 
   return (
@@ -57,6 +99,18 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
           >
             🎬 Videoclub
           </span>
+          <style>
+          {`
+            @media (min-width: 992px) {
+              .navbar-expand-lg .navbar-collapse {
+                display: flex !important;
+              }
+              .navbar-expand-lg .navbar-toggler {
+                display: none;
+              }
+            }
+          `}
+          </style>
           <button
             className="navbar-toggler"
             type="button"
@@ -65,14 +119,26 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
             aria-controls="navbarUsuarioResponsive"
             aria-expanded="false"
             aria-label="Toggle navigation"
-            onClick={e => {
-              const collapse = window.bootstrap?.Collapse.getOrCreateInstance(document.getElementById('navbarUsuarioResponsive'));
-              if (collapse) collapse.toggle();
+            onClick={() => {
+              const collapseEl = document.getElementById('navbarUsuarioResponsive');
+              if (collapseEl && window.bootstrap) {
+                const collapse = window.bootstrap.Collapse.getOrCreateInstance(collapseEl);
+                if (collapseEl.classList.contains('show')) {
+                  collapse.hide();
+                  setExpanded(false);
+                } else {
+                  collapse.show();
+                  setExpanded(true);
+                }
+              }
             }}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarUsuarioResponsive">
+          <div 
+            className={`navbar-collapse ${expanded ? 'show' : ''}`}
+            id="navbarUsuarioResponsive"
+          >
             <ul className="navbar-nav ms-auto" style={{ alignItems: 'center' }}>
               <li className="nav-item me-3">
                 <Link
