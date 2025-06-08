@@ -12,7 +12,6 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
   const [expanded, setExpanded] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 992);
 
-  // Efecto para inicializar el estado expanded después del montaje
   useEffect(() => {
     setExpanded(window.innerWidth >= 992);
   }, []);
