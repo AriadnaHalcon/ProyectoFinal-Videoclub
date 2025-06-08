@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import Swal from 'sweetalert2';
 
@@ -12,8 +12,19 @@ export default function ModalAgregarAlquiler({ clientes, peliculas }) {
     estado: 'Pendiente',
   });
 
+  const [fechaError, setFechaError] = React.useState('');
+  const [clienteInput, setClienteInput] = useState('');
+  const [clienteSuggestions, setClienteSuggestions] = useState([]);
+  const [peliculaInput, setPeliculaInput] = useState('');
+  const [peliculaSuggestions, setPeliculaSuggestions] = useState([]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFechaError('');
+    if (data.fecha_alquiler && data.fecha_devolucion && data.fecha_alquiler > data.fecha_devolucion) {
+      setFechaError('La fecha de devolución debe ser igual o posterior a la fecha de alquiler.');
+      return;
+    }
 
     Swal.fire({
       title: 'Guardando...',
@@ -62,6 +73,47 @@ export default function ModalAgregarAlquiler({ clientes, peliculas }) {
     });
   };
 
+  // Autocompletado de cliente
+  const handleClienteInput = (e) => {
+    const value = e.target.value;
+    setClienteInput(value);
+    setData('dni_cliente', '');
+    if (value.length === 0) {
+      setClienteSuggestions([]);
+      return;
+    }
+    const filtered = clientes.filter(c =>
+      c.nombre.toLowerCase().includes(value.toLowerCase()) ||
+      c.dni.toLowerCase().includes(value.toLowerCase())
+    );
+    setClienteSuggestions(filtered);
+  };
+  const selectCliente = (cliente) => {
+    setClienteInput(cliente.nombre + ' (' + cliente.dni + ')');
+    setData('dni_cliente', cliente.dni);
+    setClienteSuggestions([]);
+  };
+
+  // Autocompletado de película
+  const handlePeliculaInput = (e) => {
+    const value = e.target.value;
+    setPeliculaInput(value);
+    setData('id_pelicula', '');
+    if (value.length === 0) {
+      setPeliculaSuggestions([]);
+      return;
+    }
+    const filtered = peliculas.filter(p =>
+      p.titulo.toLowerCase().includes(value.toLowerCase())
+    );
+    setPeliculaSuggestions(filtered);
+  };
+  const selectPelicula = (pelicula) => {
+    setPeliculaInput(pelicula.titulo);
+    setData('id_pelicula', pelicula.id_pelicula);
+    setPeliculaSuggestions([]);
+  };
+
   return (
     <div
       ref={modalRef}
@@ -80,32 +132,54 @@ export default function ModalAgregarAlquiler({ clientes, peliculas }) {
           <div className="modal-body">
             <div className="mb-3">
               <label className="form-label">Cliente</label>
-              <select
+              <input
+                type="text"
                 className="form-control"
-                value={data.dni_cliente}
-                onChange={(e) => setData('dni_cliente', e.target.value)}
-              >
-                {clientes.map((cliente) => (
-                  <option key={cliente.dni} value={cliente.dni}>
-                    {cliente.nombre}
-                  </option>
-                ))}
-              </select>
+                value={clienteInput}
+                onChange={handleClienteInput}
+                placeholder="Buscar cliente por nombre o DNI"
+                autoComplete="off"
+              />
+              {clienteSuggestions.length > 0 && (
+                <ul className="list-group position-absolute w-100" style={{ zIndex: 10 }}>
+                  {clienteSuggestions.map((cliente) => (
+                    <li
+                      key={cliente.dni}
+                      className="list-group-item list-group-item-action"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => selectCliente(cliente)}
+                    >
+                      {cliente.nombre} ({cliente.dni})
+                    </li>
+                  ))}
+                </ul>
+              )}
               {errors.dni_cliente && <div className="text-danger">{errors.dni_cliente}</div>}
             </div>
             <div className="mb-3">
               <label className="form-label">Película</label>
-              <select
+              <input
+                type="text"
                 className="form-control"
-                value={data.id_pelicula}
-                onChange={(e) => setData('id_pelicula', e.target.value)}
-              >
-                {peliculas.map((pelicula) => (
-                  <option key={pelicula.id_pelicula} value={pelicula.id_pelicula}>
-                    {pelicula.titulo}
-                  </option>
-                ))}
-              </select>
+                value={peliculaInput}
+                onChange={handlePeliculaInput}
+                placeholder="Buscar película por título"
+                autoComplete="off"
+              />
+              {peliculaSuggestions.length > 0 && (
+                <ul className="list-group position-absolute w-100" style={{ zIndex: 10 }}>
+                  {peliculaSuggestions.map((pelicula) => (
+                    <li
+                      key={pelicula.id_pelicula}
+                      className="list-group-item list-group-item-action"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => selectPelicula(pelicula)}
+                    >
+                      {pelicula.titulo}
+                    </li>
+                  ))}
+                </ul>
+              )}
               {errors.id_pelicula && <div className="text-danger">{errors.id_pelicula}</div>}
             </div>
             <div className="mb-3">
@@ -128,6 +202,7 @@ export default function ModalAgregarAlquiler({ clientes, peliculas }) {
               />
               {errors.fecha_devolucion && <div className="text-danger">{errors.fecha_devolucion}</div>}
             </div>
+            {fechaError && <div className="text-danger">{fechaError}</div>}
             <div className="mb-3">
               <label className="form-label">Estado</label>
               <select

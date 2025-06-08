@@ -1,3 +1,30 @@
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    width: 100%;
+    background: #F1C6D1;
+    padding: 1rem 0.5rem;
+    border-radius: 0 0 12px 12px;
+  }
+  .navbar-collapse.show {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  .navbar-nav {
+    width: 100%;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem;
+  }
+  .navbar-nav .nav-item {
+    width: 100%;
+  }
+  .navbar-nav .nav-link {
+    width: 100%;
+    text-align: left;
+    padding-left: 1rem;
+  }
+}
 body {
     background-color: #FADADD; 
     font-family: 'Poppins', sans-serif;  
@@ -74,7 +101,6 @@ table tbody tr:hover {
     display: flex;
     flex-direction: row; 
     justify-content: center;
-    /* align-items: center; */
     gap: 10px; 
     text-align: center;
 }
@@ -206,56 +232,3 @@ button {
   justify-content: center;
   margin-bottom: 1.5rem;
 }
-
-/* .btn {
-    padding: 8px 18px;
-    border-radius: 8px;
-    font-weight: bold;
-    border: none;
-    font-family: 'Poppins', sans-serif;
-    transition: background 0.2s;
-    cursor: pointer;
-}
-.btn-alquilar {
-    background-color: #F1C6D1;
-    color: #5A3F50;
-}
-.btn-alquilar:hover {
-    background-color: #D28B7A;
-    color: #fff;
-}
-.btn-comprar {
-    background-color: #D28B7A;
-    color: #fff;
-}
-.btn-comprar:hover {
-    background-color: #F1C6D1;
-    color: #5A3F50;
-}
-
-.catalogo-usuario {
-    padding: 32px 0;
-    min-height: 100vh;
-    background: #FADADD;
-    font-family: 'Poppins', sans-serif;
-}
-.titulo-catalogo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #5A3F50;
-    margin-bottom: 24px;
-    text-align: center;
-    letter-spacing: 1px;
-}
-.catalogo-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 24px;
-}
-.carrito-usuario {
-    margin-top: 40px;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
-} */

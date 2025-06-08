@@ -41,7 +41,15 @@ class CategoriaController extends Controller
             'descripcion' => 'nullable',
         ]);
 
-        Categoria::create($request->all());
+        $categoria = Categoria::create($request->all());
+
+        if ($request->ajax()) {
+            $categoria->refresh();
+            return response()->json([
+                'id_categoria' => $categoria->id_categoria,
+                'nombre' => $categoria->nombre,
+            ]);
+        }
 
         return redirect()->route('categorias.index')->with('success', 'Categoría creada correctamente.');
     }
@@ -123,5 +131,34 @@ class CategoriaController extends Controller
 
         // Descargar el PDF
         return $dompdf->stream('categorias.pdf');
+    }
+    
+    public function descargarCSV()
+    {
+        if (Auth::user()->rol !== 'administrador') {
+            abort(403, 'No tienes permiso para acceder aquí.');
+        }
+        $categorias = Categoria::all();
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="categorias.csv"',
+        ];
+        $callback = function() use ($categorias) {
+            // Escribir BOM para UTF-8
+            echo chr(239) . chr(187) . chr(191);
+            $handle = fopen('php://output', 'w');
+            // Encabezado
+            fputcsv($handle, ['Id', 'Nombre', 'Descripción'], ';');
+            // Datos
+            foreach ($categorias as $c) {
+                fputcsv($handle, [
+                    $c->id_categoria,
+                    $c->nombre,
+                    $c->descripcion,
+                ], ';'); // <-- Punto y coma para separar los campos
+            }
+            fclose($handle);
+        };
+        return response()->streamDownload($callback, 'categorias.csv', $headers);
     }
 }

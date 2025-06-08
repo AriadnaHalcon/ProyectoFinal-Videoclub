@@ -69,42 +69,43 @@ export default function CategoriasIndex({ categorias, error, success }) {
       <div className="container mt-4">
         <h1 className="mb-4 display-6">Listado de Categorías</h1>
 
-        <table className="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Descripción</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categorias.map((categoria) => (
-              <tr key={categoria.id_categoria}>
-                <td>{categoria.id_categoria}</td>
-                <td>{categoria.nombre}</td>
-                <td>{categoria.descripcion}</td>
-                <td>
-                  <div>
-                    <button
-                      className="btn btn-success me-2 mb-2"
-                      onClick={() => handleEdit(categoria)}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      className="btn btn-danger mb-2"
-                      onClick={() => handleDelete(categoria.id_categoria)}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </td>
+        <div className="table-responsive">
+          <table className="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-
+            </thead>
+            <tbody>
+              {categorias.map((categoria) => (
+                <tr key={categoria.id_categoria}>
+                  <td>{categoria.id_categoria}</td>
+                  <td>{categoria.nombre}</td>
+                  <td>{categoria.descripcion}</td>
+                  <td>
+                    <div>
+                      <button
+                        className="btn btn-success me-2 mb-2"
+                        onClick={() => handleEdit(categoria)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className="btn btn-danger mb-2"
+                        onClick={() => handleDelete(categoria.id_categoria)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="d-flex justify-content-start mt-4">
           <button
             className="btn btn-primary me-2 mb-2"
@@ -123,6 +124,13 @@ export default function CategoriasIndex({ categorias, error, success }) {
             className="btn btn-warning ms-2 mb-2"
           >
             Descargar listado
+          </a>
+
+          <a
+            href={route('descargarCSV.categorias')}
+            className="btn btn-success ms-2 mb-2"
+          >
+            Descargar CSV
           </a>
         </div>
 

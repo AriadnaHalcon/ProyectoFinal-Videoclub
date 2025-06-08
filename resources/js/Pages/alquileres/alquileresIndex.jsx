@@ -51,50 +51,51 @@ export default function AlquileresIndex({ alquileres, clientes, peliculas }) {
     <div className="container mt-4">
       <h1 className="mb-4 display-6">Listado de Alquileres</h1>
 
-      <table className="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>Cliente</th>
-            <th>Película</th>
-            <th>Fecha Alquiler</th>
-            <th>Fecha Devolución</th>
-            <th>Estado</th>
-            <th>Precio Rebajado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {alquileres.map((alquiler) => (
-            <tr key={alquiler.id_alquiler}>
-              <td>{alquiler.cliente?.nombre}</td>
-              <td>{alquiler.pelicula?.titulo}</td>
-              <td>{alquiler.fecha_alquiler}</td>
-              <td>{alquiler.fecha_devolucion || 'Sin devolver'}</td>
-              <td>{alquiler.estado}</td>
-              <td>
-                {typeof alquiler.precio_rebajado === 'number'
-                  ? `€${alquiler.precio_rebajado.toFixed(2)}`
-                  : 'Precio no disponible'}
-              </td>
-              <td>
-                <button
-                  className="btn btn-success me-2 mb-2"
-                  onClick={() => handleEdit(alquiler)}
-                >
-                  Editar
-                </button>
-                <button
-                  className="btn btn-danger mb-2"
-                  onClick={() => handleDelete(alquiler.id_alquiler)}
-                >
-                  Eliminar
-                </button>
-              </td>
+      <div className="table-responsive">
+        <table className="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Película</th>
+              <th>Fecha Alquiler</th>
+              <th>Fecha Devolución</th>
+              <th>Estado</th>
+              <th>Precio Rebajado</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
+          </thead>
+          <tbody>
+            {alquileres.map((alquiler) => (
+              <tr key={alquiler.id_alquiler}>
+                <td>{alquiler.cliente?.nombre}</td>
+                <td>{alquiler.pelicula?.titulo}</td>
+                <td>{alquiler.fecha_alquiler}</td>
+                <td>{alquiler.fecha_devolucion || 'Sin devolver'}</td>
+                <td>{alquiler.estado}</td>
+                <td>
+                  {typeof alquiler.precio_rebajado === 'number'
+                    ? `€${alquiler.precio_rebajado.toFixed(2)}`
+                    : 'Precio no disponible'}
+                </td>
+                <td>
+                  <button
+                    className="btn btn-success me-2 mb-2"
+                    onClick={() => handleEdit(alquiler)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="btn btn-danger mb-2"
+                    onClick={() => handleDelete(alquiler.id_alquiler)}
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div className="d-flex justify-content-start mt-4">
         <button
           className="btn btn-primary me-2 mb-2"
@@ -113,6 +114,13 @@ export default function AlquileresIndex({ alquileres, clientes, peliculas }) {
           className="btn btn-warning ms-2 mb-2"
         >
           Descargar listado
+        </a>
+
+        <a
+          href={route('descargarCSV.alquileres')}
+          className="btn btn-success ms-2 mb-2"
+        >
+          Descargar CSV
         </a>
       </div>
 

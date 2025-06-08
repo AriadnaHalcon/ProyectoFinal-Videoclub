@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Cliente;
 use App\Models\Tarifa;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 
 class AuthController extends Controller
@@ -52,9 +53,20 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'dni' => 'required|string|unique:clientes',
+            'dni' => [
+                'required',
+                'string',
+                'unique:clientes',
+                'regex:/^[0-9]{8}[A-Za-z]$/',
+                'size:9',
+            ],
             'direccion' => 'required|string|max:255',
-            'telefono' => 'required|string|max:15',
+            'telefono' => [
+                'required',
+                'string',
+                'size:9',
+                'regex:/^[0-9]+$/',
+            ],
         ], [
             'name.required' => 'El nombre es obligatorio.',
             'email.required' => 'El correo electrónico es obligatorio.',
@@ -65,88 +77,41 @@ class AuthController extends Controller
             'password.confirmed' => 'Las contraseñas no coinciden.',
             'dni.required' => 'El DNI es obligatorio.',
             'dni.unique' => 'Este DNI ya está registrado.',
+            'dni.regex' => 'El DNI debe tener 8 números seguidos de una letra (ejemplo: 12345678A).',
+            'dni.size' => 'El DNI debe tener exactamente 9 caracteres.',
             'direccion.required' => 'La dirección es obligatoria.',
             'telefono.required' => 'El teléfono es obligatorio.',
+            'telefono.regex' => 'El teléfono solo puede contener números.',
+            'telefono.size' => 'El teléfono debe tener exactamente 9 dígitos.',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'rol' => 'usuario', 
-            
-        ]);
+        try {
+            DB::transaction(function () use ($request) {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'rol' => 'usuario',
+                    'dni' => $request->dni,
+                ]);
 
-        $tarifaStandard = Tarifa::where('nombre', 'Estándar')->first();
+                $tarifaStandard = Tarifa::where('nombre', 'Estándar')->first();
 
-        Cliente::create([
-            'dni' => $request->dni,
-            'nombre' => $request->name,
-            'direccion' => $request->direccion,
-            'telefono' => $request->telefono,
-            'email' => $request->email,
-            'id_tarifa' => $tarifaStandard ? $tarifaStandard->id_tarifa : null,
-            'user_id' => $user->id,  
-        ]);
+                Cliente::create([
+                    'dni' => $request->dni,
+                    'nombre' => $request->name,
+                    'direccion' => $request->direccion,
+                    'telefono' => $request->telefono,
+                    'email' => $request->email,
+                    'id_tarifa' => $tarifaStandard ? $tarifaStandard->id_tarifa : null,
+                    'user_id' => $user->id,
+                ]);
+            });
 
-        return redirect()->route('login');
+            return redirect()->route('login');
+        } catch (\Exception $e) {
+            return back()->withErrors(['register' => 'Error al registrar usuario y cliente: ' . $e->getMessage()])->withInput();
+        }
     }
 
 }
-
-
-// namespace App\Http\Controllers;
-
-// use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Auth;
-// use App\Models\User;
-// use Illuminate\Support\Facades\Hash;
-
-// class AuthController extends Controller
-// {
-//     public function showLoginForm()
-//     {
-//         return view('auth.login');
-//     }
-
-//     public function login(Request $request)
-//     {
-//         $credentials = $request->only('email', 'password');
-
-//         if (Auth::attempt($credentials)) {
-//             return redirect()->intended('/home');
-//         }
-
-//         return back()->withErrors([
-//             'email' => 'The provided credentials do not match our records.',
-//         ]);
-//     }
-
-//     public function showRegisterForm()
-//     {
-//         return view('auth.register');
-//     }
-
-//     public function register(Request $request)
-//     {
-//         $request->validate([
-//             'name' => 'required|string|max:255',
-//             'email' => 'required|string|email|max:255|unique:users',
-//             'password' => 'required|string|min:8|confirmed',
-//         ]);
-
-//         User::create([
-//             'name' => $request->name,
-//             'email' => $request->email,
-//             'password' => Hash::make($request->password),
-//         ]);
-
-//         return redirect()->route('login');
-//     }
-
-//     public function logout()
-//     {
-//         Auth::logout();
-//         return redirect()->route('login');
-//     }
-// }

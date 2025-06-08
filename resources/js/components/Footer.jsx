@@ -11,7 +11,7 @@ const Footer = () => (
     borderTop: '2px solid #D28B7A',
     marginTop: 40
   }}>
-    © 2024 Videoclub. Todos los derechos reservados.<br />
+    © 2025 Videoclub. Todos los derechos reservados.<br />
     Ariadna Halcón Romero | ahalrom2904@g.educaand.es<br />
     2º Desarrollo de Aplicaciones Web | IES Sotero Hernández<br />
   </footer>

@@ -45,12 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/perfil/datos', [ClienteController::class, 'perfil']);
 
     Route::post('/perfil', [ClienteController::class, 'actualizarPerfil']);
-
-    // Route::get('/peliculas-usuario', function () {
-    //     return Inertia::render('interfazUsuario/peliculas', [
-    //         'peliculas' => \App\Models\Pelicula::all()
-    //     ]);
-    // });
     
     Route::get('/peliculas-usuario', [ClienteController::class, 'peliculas'])->name('peliculas.usuario');
 
@@ -69,6 +63,7 @@ Route::middleware('auth')->group(function () {
         // Clientes
         Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
         Route::get('/clientes/descargar-pdf', [ClienteController::class, 'descargaPDF'])->name('descargarPDF.descargarClientes');
+        Route::get('/clientes/descargar-csv', [ClienteController::class, 'descargarCSV'])->name('descargarCSV.clientes');
         Route::post('/clientes', [ClienteController::class, 'store'])->name('clientes.store');
         Route::put('/clientes/{dni}', [ClienteController::class, 'update'])->name('clientes.update');
         Route::delete('/clientes/{dni}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
@@ -79,6 +74,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/tarifas/{id}', [TarifaController::class, 'update'])->name('tarifas.update');
         Route::delete('/tarifas/{id}', [TarifaController::class, 'destroy'])->name('tarifas.destroy');
         Route::get('/tarifas/descargar-pdf', [TarifaController::class, 'descargaPDF'])->name('descargarPDF.descargarTarifas');
+        Route::get('/tarifas/descargar-csv', [TarifaController::class, 'descargarCSV'])->name('descargarCSV.tarifas');
 
         // Películas
         Route::get('/peliculas', [PeliculaController::class, 'index'])->name('peliculas.index');
@@ -86,6 +82,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/peliculas/{pelicula}', [PeliculaController::class, 'update'])->name('peliculas.update');
         Route::delete('/peliculas/{pelicula}', [PeliculaController::class, 'destroy'])->name('peliculas.destroy');
         Route::get('/peliculas/descargar-pdf', [PeliculaController::class, 'descargaPDF'])->name('descargarPDF.descargarPeliculas');
+        Route::get('/peliculas/descargar-csv', [PeliculaController::class, 'descargarCSV'])->name('descargarCSV');
 
         // Alquileres
         Route::get('/alquileres', [AlquilerController::class, 'index'])->name('alquileres.index');
@@ -93,6 +90,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/alquileres/{alquiler}', [AlquilerController::class, 'update'])->name('alquileres.update');
         Route::delete('/alquileres/{alquiler}', [AlquilerController::class, 'destroy'])->name('alquileres.destroy');
         Route::get('/alquileres/descargar-pdf', [AlquilerController::class, 'descargaPDF'])->name('descargarPDF.descargarAlquileres');
+        Route::get('/alquileres/descargar-csv', [AlquilerController::class, 'descargarCSV'])->name('descargarCSV.alquileres');
 
         // Categorías
         Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias.index');
@@ -100,6 +98,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/categorias/{categoria}', [CategoriaController::class, 'update'])->name('categorias.update');
         Route::delete('/categorias/{categoria}', [CategoriaController::class, 'destroy'])->name('categorias.destroy');
         Route::get('/categorias/descargar-pdf', [CategoriaController::class, 'descargaPDF'])->name('descargarPDF.descargarCategorias');
+        Route::get('/categorias/descargar-csv', [CategoriaController::class, 'descargarCSV'])->name('descargarCSV.categorias');
     });
 
     // Profile (de Laravel Breeze)

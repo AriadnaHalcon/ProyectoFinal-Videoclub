@@ -51,46 +51,47 @@ return (
         <div className="container mt-4">
             <h1 className="mb-4 display-6">Listado de Clientes</h1>
 
-            <table className="table table-bordered table-hover">
+            <div className="table-responsive">
+              <table className="table table-bordered table-hover">
                 <thead>
-                    <tr>
-                        <th>DNI</th>
-                        <th>Nombre</th>
-                        <th>Dirección</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>
-                        <th>Tarifa</th>
-                        <th>Acciones</th>
-                    </tr>
+                  <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Tarifa</th>
+                    <th>Acciones</th>
+                  </tr>
                 </thead>
                 <tbody>
-                    {clientes.map((cliente) => (
-                        <tr key={cliente.dni}>
-                            <td>{cliente.dni}</td>
-                            <td>{cliente.nombre}</td>
-                            <td>{cliente.direccion}</td>
-                            <td>{cliente.telefono}</td>
-                            <td>{cliente.email}</td>
-                            <td>{cliente.tarifa?.nombre}</td>
-                            <td>
-                                <button
-                                    className="btn btn-success me-2 mb-2"
-                                    onClick={() => handleEdit(cliente)}
-                                >
-                                    Editar
-                                </button>
-                                <button
-                                    className="btn btn-danger mb-2"
-                                    onClick={() => handleDelete(cliente.dni)}
-                                >
-                                    Eliminar
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
+                  {clientes.map((cliente) => (
+                    <tr key={cliente.dni}>
+                      <td>{cliente.dni}</td>
+                      <td>{cliente.nombre}</td>
+                      <td>{cliente.direccion}</td>
+                      <td>{cliente.telefono}</td>
+                      <td>{cliente.email}</td>
+                      <td>{cliente.tarifa?.nombre}</td>
+                      <td>
+                        <button
+                          className="btn btn-success me-2 mb-2"
+                          onClick={() => handleEdit(cliente)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="btn btn-danger mb-2"
+                          onClick={() => handleDelete(cliente.dni)}
+                        >
+                          Eliminar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
-            </table>
-
+              </table>
+            </div>
             <div className="d-flex justify-content-start mt-4">
                 <button
                     id="abrirModalAgregarCliente"
@@ -111,6 +112,12 @@ return (
                     className="btn btn-warning ms-2 mb-2"
             >
                     Descargar listado
+            </a>
+            <a
+                href={route('descargarCSV.clientes')}
+                className="btn btn-success ms-2 mb-2"
+            >
+                Descargar CSV
             </a>
             </div>
         </div>

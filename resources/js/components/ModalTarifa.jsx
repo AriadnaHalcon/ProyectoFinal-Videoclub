@@ -1,7 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ModalPagoSimulado from '@/components/ModalPagoSimulado';
+import Swal from 'sweetalert2';
 
 export default function ModalTarifa({ tarifaActual, tarifas = [], onSubmit, data, setData, processing, errors, success, error, onClose }) {
+    const [showPago, setShowPago] = useState(false);
+    const handlePagoSuccess = () => {
+        Swal.fire({
+          title: 'Guardando y pago exitoso',
+          text: 'El pago se ha realizado correctamente. Cambiando tarifa...',
+          icon: 'success',
+          timer: 1800,
+          showConfirmButton: false,
+        });
+        setShowPago(false);
+        setTimeout(() => {
+          onSubmit();
+        }, 1800);
+    };
+    const handleAbrirPago = (e) => {
+        e.preventDefault();
+        Swal.fire({
+          title: 'Cargando',
+          text: 'Abriendo pasarela de pago simulada...',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        setTimeout(() => {
+          Swal.close();
+          setShowPago(true);
+        }, 1000);
+    };
     return (
+        <>
         <div
             className="modal-content"
             style={{
@@ -11,7 +44,7 @@ export default function ModalTarifa({ tarifaActual, tarifas = [], onSubmit, data
                 border: 'none'
             }}
         >
-            <form onSubmit={onSubmit}>
+            <form onSubmit={handleAbrirPago}>
                 <div
                     className="modal-header"
                     style={{
@@ -95,5 +128,7 @@ export default function ModalTarifa({ tarifaActual, tarifas = [], onSubmit, data
                 </div>
             </form>
         </div>
+        <ModalPagoSimulado show={showPago} onClose={() => setShowPago(false)} onSuccess={handlePagoSuccess} />
+        </>
     );
 }

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { usePage, useForm, router } from '@inertiajs/react';
-import NavbarUsuario from '@/components/NavbarUsuario';
-import ModalTarifa from '@/components/ModalTarifa';
 import Swal from 'sweetalert2';
-import { useCarrito } from '@/components/Carrito';
 import AppLayoutUsuario from '@/Layouts/AppLayoutUsuario';
 
 const Perfil = () => {
@@ -11,7 +8,8 @@ const Perfil = () => {
   const [mensaje, setMensaje] = useState(null);
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [dniValido, setDniValido] = useState(true);
+  const [telefonoValido, setTelefonoValido] = useState(true);
 
   // Formulario para el perfil
   const [form, setForm] = useState({
@@ -22,41 +20,9 @@ const Perfil = () => {
     email: cliente?.email || '',
   });
 
-  // Formulario para la tarifa
   const { data, setData, processing, errors } = useForm({
     id_tarifa: tarifaActual ? tarifaActual.id_tarifa : '',
   });
-
-  const handleOpenTarifaModal = () => {
-    let idTarifa = '';
-    if (tarifaActual && tarifaActual.id_tarifa) {
-      idTarifa = tarifaActual.id_tarifa;
-    } else if (Array.isArray(tarifas) && tarifas.length > 0) {
-      idTarifa = tarifas[0].id_tarifa;
-    }
-    setData('id_tarifa', idTarifa);
-  };
-
-  // Cambio de tarifa
-  const handleTarifaSubmit = e => {
-    e.preventDefault();
-    Swal.fire({
-      title: 'Guardando...',
-      text: 'Por favor, espera mientras se guarda la tarifa.',
-      icon: 'info',
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
-    router.post(route('cliente.cambiarTarifa'), data, {
-      preserveScroll: true,
-      onFinish: () => {
-        Swal.close();
-      },
-    });
-  };
 
   useEffect(() => {
     if (success) {
@@ -81,7 +47,19 @@ const Perfil = () => {
   }, [success, errorTarifa]);
 
   const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let newValue = value;
+    if (name === 'dni') {
+      newValue = newValue.toUpperCase().replace(/[^0-9A-Za-z]/g, '');
+      if (newValue.length > 9) newValue = newValue.slice(0, 9);
+      setDniValido(/^[0-9]{8}[A-Za-z]$/.test(newValue));
+    }
+    if (name === 'telefono') {
+      newValue = newValue.replace(/[^0-9]/g, '');
+      if (newValue.length > 9) newValue = newValue.slice(0, 9);
+      setTelefonoValido(/^[0-9]{9}$/.test(newValue));
+    }
+    setForm({ ...form, [name]: newValue });
   };
 
   const handleSubmit = e => {
@@ -118,8 +96,7 @@ const Perfil = () => {
       .finally(() => setSaving(false));
   };
 
-
-  // Si no hay datos de perfil, mostrar cargando perfil
+  // Si no hay datos de perfil, muestra "cargando perfil"
   if (!form.dni && !form.nombre && !form.email && !form.direccion && !form.telefono) {
     return <p>Cargando perfil...</p>;
   }
@@ -140,7 +117,13 @@ const Perfil = () => {
           onChange={handleChange}
           className="form-input"
           required
+          maxLength={9}
         />
+        {!dniValido && form.dni.length === 9 && (
+          <div style={{ color: 'red', marginTop: 4 }}>
+            El DNI debe tener 8 números seguidos de una letra (ejemplo: 12345678A).
+          </div>
+        )}
 
         <label className="block mb-2 font-semibold text-left w-full" style={{ color: '#5A3F50' }}>Nombre</label>
         <input
@@ -168,7 +151,13 @@ const Perfil = () => {
           value={form.telefono}
           onChange={handleChange}
           className="form-input"
+          maxLength={9}
         />
+        {!telefonoValido && form.telefono.length === 9 && (
+          <div style={{ color: 'red', marginTop: 4 }}>
+            El teléfono debe tener exactamente 9 dígitos numéricos.
+          </div>
+        )}
 
         <label className="block mb-2 font-semibold text-left w-full" style={{ color: '#5A3F50' }}>Email</label>
         <input
@@ -181,7 +170,7 @@ const Perfil = () => {
 
         <button
           type="submit"
-          disabled={saving}
+          disabled={saving || !dniValido || !telefonoValido}
           className="btn-guardar mt-4 mx-auto"
           style={{ display: 'block' }}
         >

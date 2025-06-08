@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import ModalPagoSimulado from '@/components/ModalPagoSimulado';
 
 export const CarritoContext = createContext();
 
@@ -41,6 +42,7 @@ export function CarritoProvider({ children }) {
 const Carrito = ({ onRemove, onClear, tarifaActual }) => {
   const { carrito, clearCarrito } = useCarrito();
   const [loading, setLoading] = useState(false);
+  const [showPago, setShowPago] = useState(false);
   const descuento = Number(tarifaActual?.descuento) || 0;
   const total = carrito.reduce((acc, item) => {
     const precio = item.tipo === 'alquilar'
@@ -50,6 +52,11 @@ const Carrito = ({ onRemove, onClear, tarifaActual }) => {
   }, 0);
 
   const handlePagar = async () => {
+    setShowPago(true);
+  };
+
+  const handlePagoSimulado = async () => {
+    setShowPago(false);
     setLoading(true);
     Swal.fire({
       title: 'Procesando el pago...',
@@ -154,6 +161,7 @@ const Carrito = ({ onRemove, onClear, tarifaActual }) => {
           Vaciar carrito
         </button>
       </div>
+      <ModalPagoSimulado show={showPago} onClose={() => setShowPago(false)} onSuccess={handlePagoSimulado} />
     </>
   );
 };

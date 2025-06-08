@@ -38,7 +38,7 @@ export default function TarifasIndex({ tarifas, error, success }) {
   const handleDelete = (id) => {
     console.log('handleDelete ejecutado para ID:', id);
 
-    // Close Bootstrap modals if open
+    // Cerrar los modales si están abiertos
     document.querySelectorAll('.modal').forEach(modal => {
       bootstrap.Modal.getInstance(modal)?.hide();
     });
@@ -69,42 +69,43 @@ export default function TarifasIndex({ tarifas, error, success }) {
       <div className="container mt-4">
         <h1 className="mb-4 display-6">Listado de Tarifas</h1>
 
-        <table className="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Descuento</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tarifas.map((tarifa) => (
-              <tr key={tarifa.id_tarifa}>
-                <td>{tarifa.id_tarifa}</td>
-                <td>{tarifa.nombre}</td>
-                <td>{tarifa.descuento}</td>
-                <td>
-                  <div>
-                    <button
-                      className="btn btn-success me-2 mb-2"
-                      onClick={() => handleEdit(tarifa)}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      className="btn btn-danger mb-2"
-                      onClick={() => handleDelete(tarifa.id_tarifa)}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </td>
+        <div className="table-responsive">
+          <table className="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descuento</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-
+            </thead>
+            <tbody>
+              {tarifas.map((tarifa) => (
+                <tr key={tarifa.id_tarifa}>
+                  <td>{tarifa.id_tarifa}</td>
+                  <td>{tarifa.nombre}</td>
+                  <td>{tarifa.descuento}</td>
+                  <td>
+                    <div>
+                      <button
+                        className="btn btn-success me-2 mb-2"
+                        onClick={() => handleEdit(tarifa)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className="btn btn-danger mb-2"
+                        onClick={() => handleDelete(tarifa.id_tarifa)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="d-flex justify-content-start mt-4">
           <button
             className="btn btn-primary me-2 mb-2"
@@ -123,6 +124,13 @@ export default function TarifasIndex({ tarifas, error, success }) {
             className="btn btn-warning ms-2 mb-2"
           >
             Descargar listado
+          </a>
+
+          <a
+            href={route('descargarCSV.tarifas')}
+            className="btn btn-success ms-2 mb-2"
+          >
+            Descargar CSV
           </a>
         </div>
 

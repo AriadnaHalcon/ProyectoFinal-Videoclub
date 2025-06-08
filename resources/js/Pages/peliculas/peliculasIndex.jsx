@@ -3,6 +3,7 @@ import { Link, router, usePage } from '@inertiajs/react';
 import Swal from 'sweetalert2';
 import ModalAgregarPelicula from '@/components/ModalAgregarPelicula';
 import ModalEditarPelicula from '@/components/ModalEditarPelicula';
+import ModalAgregarCategoria from '@/components/ModalAgregarCategoria';
 import AppLayout from '@/Layouts/AppLayout';
 import SearchBar from '@/components/SearchBar';
 
@@ -67,58 +68,59 @@ export default function PeliculasIndex({ peliculas: initialPeliculas, categorias
 
         <SearchBar routeName="peliculas.index" search={search} />
 
-        <table className="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>Imagen</th>
-              <th>Título</th>
-              <th>Categoría</th>
-              <th>Director</th>
-              <th>Año de Estreno</th>
-              <th>Stock</th>
-              <th>Precio</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {peliculas.map((pelicula) => (
-              <tr key={pelicula.id_pelicula}>
-                <td>
-                  {pelicula.imagen ? (
-                    <img
-                      src={`/storage/${pelicula.imagen}`}
-                      alt={pelicula.titulo}
-                      style={{ maxWidth: '100px', maxHeight: '100px' }}
-                    />
-                  ) : (
-                    <span>Sin Imagen</span>
-                  )}
-                </td>
-                <td>{pelicula.titulo}</td>
-                <td>{pelicula.categoria?.nombre}</td>
-                <td>{pelicula.director}</td>
-                <td>{pelicula.anio_estreno}</td>
-                <td>{pelicula.stock}</td>
-                <td>{pelicula.precio}</td>
-                <td>
-                  <button
-                    className="btn btn-success me-2 mb-2"
-                    onClick={() => handleEdit(pelicula)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="btn btn-danger mb-2"
-                    onClick={() => handleDelete(pelicula.id_pelicula)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
+        <div className="table-responsive">
+          <table className="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Título</th>
+                <th>Categoría</th>
+                <th>Director</th>
+                <th>Año de Estreno</th>
+                <th>Stock</th>
+                <th>Precio</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-
+            </thead>
+            <tbody>
+              {peliculas.map((pelicula) => (
+                <tr key={pelicula.id_pelicula}>
+                  <td>
+                    {pelicula.imagen ? (
+                      <img
+                        src={`/storage/${pelicula.imagen}`}
+                        alt={pelicula.titulo}
+                        style={{ maxWidth: '100px', maxHeight: '100px' }}
+                      />
+                    ) : (
+                      <span>Sin Imagen</span>
+                    )}
+                  </td>
+                  <td>{pelicula.titulo}</td>
+                  <td>{pelicula.categoria?.nombre}</td>
+                  <td>{pelicula.director}</td>
+                  <td>{pelicula.anio_estreno}</td>
+                  <td>{pelicula.stock}</td>
+                  <td>{pelicula.precio}</td>
+                  <td>
+                    <button
+                      className="btn btn-success me-2 mb-2"
+                      onClick={() => handleEdit(pelicula)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn btn-danger mb-2"
+                      onClick={() => handleDelete(pelicula.id_pelicula)}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="d-flex justify-content-start mt-4">
           <button
             id="abrirModalAgregarPelicula"
@@ -140,10 +142,18 @@ export default function PeliculasIndex({ peliculas: initialPeliculas, categorias
           >
             Descargar listado
           </a>
+
+          <a
+            href={route('descargarCSV')}
+            className="btn btn-success ms-2 mb-2"
+          >
+            Descargar CSV
+          </a>
         </div>
 
         <ModalAgregarPelicula categorias={categorias} />
         <ModalEditarPelicula categorias={categorias} />
+        <ModalAgregarCategoria />
       </div>
     </>
   );

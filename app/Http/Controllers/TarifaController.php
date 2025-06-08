@@ -141,5 +141,34 @@ class TarifaController extends Controller
         return $dompdf->stream('tarifas.pdf');
     }
 
+    public function descargarCSV()
+    {
+        if (Auth::user()->rol !== 'administrador') {
+            abort(403, 'No tienes permiso para acceder aquí.');
+        }
+        $tarifas = Tarifa::all();
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="tarifas.csv"',
+        ];
+        $callback = function() use ($tarifas) {
+            // Escribir BOM para UTF-8
+            echo chr(239) . chr(187) . chr(191);
+            $handle = fopen('php://output', 'w');
+            // Encabezado
+            fputcsv($handle, ['Id', 'Nombre', 'Descuento (%)'], ';');
+            // Datos
+            foreach ($tarifas as $t) {
+                fputcsv($handle, [
+                    $t->id_tarifa,
+                    $t->nombre,
+                    $t->descuento,
+                ], ';'); // <-- Punto y coma para separar los campos
+            }
+            fclose($handle);
+        };
+        return response()->streamDownload($callback, 'tarifas.csv', $headers);
+    }
+
 }
 

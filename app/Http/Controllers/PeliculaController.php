@@ -65,10 +65,25 @@ class PeliculaController extends Controller
             'titulo' => 'required|string|max:255',
             'id_categoria' => 'required|exists:categorias,id_categoria',
             'director' => 'nullable|string|max:255',
-            'anio_estreno' => 'nullable|digits:4',
-            'stock' => 'nullable|integer',
+            'anio_estreno' => 'nullable|digits:4|max:' . date('Y'),
+            'stock' => 'nullable|integer|min:0',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'precio' => 'required|numeric|min:0',
+        ], [
+            'titulo.required' => 'El título es obligatorio.',
+            'id_categoria.required' => 'La categoría es obligatoria.',
+            'id_categoria.exists' => 'La categoría seleccionada no existe.',
+            'director.max' => 'El director no puede tener más de 255 caracteres.',
+            'anio_estreno.digits' => 'El año de estreno debe tener 4 dígitos.',
+            'anio_estreno.max' => 'El año de estreno no puede ser mayor que el actual.',
+            'stock.integer' => 'El stock debe ser un número entero.',
+            'stock.min' => 'El stock no puede ser negativo.',
+            'imagen.image' => 'El archivo debe ser una imagen.',
+            'imagen.mimes' => 'La imagen debe ser de tipo jpeg, png, jpg o gif.',
+            'imagen.max' => 'La imagen no puede superar los 2MB.',
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'precio.min' => 'El precio no puede ser negativo.',
         ]);
 
         $pelicula = new Pelicula($request->all());
@@ -103,10 +118,25 @@ class PeliculaController extends Controller
             'titulo' => 'required|string|max:255',
             'id_categoria' => 'required|exists:categorias,id_categoria',
             'director' => 'nullable|string|max:255',
-            'anio_estreno' => 'nullable|digits:4',
-            'stock' => 'nullable|integer',
+            'anio_estreno' => 'nullable|digits:4|max:' . date('Y'),
+            'stock' => 'nullable|integer|min:0',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'precio' => 'required|numeric|min:0',
+        ], [
+            'titulo.required' => 'El título es obligatorio.',
+            'id_categoria.required' => 'La categoría es obligatoria.',
+            'id_categoria.exists' => 'La categoría seleccionada no existe.',
+            'director.max' => 'El director no puede tener más de 255 caracteres.',
+            'anio_estreno.digits' => 'El año de estreno debe tener 4 dígitos.',
+            'anio_estreno.max' => 'El año de estreno no puede ser mayor que el actual.',
+            'stock.integer' => 'El stock debe ser un número entero.',
+            'stock.min' => 'El stock no puede ser negativo.',
+            'imagen.image' => 'El archivo debe ser una imagen.',
+            'imagen.mimes' => 'La imagen debe ser de tipo jpeg, png, jpg o gif.',
+            'imagen.max' => 'La imagen no puede superar los 2MB.',
+            'precio.required' => 'El precio es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'precio.min' => 'El precio no puede ser negativo.',
         ]);
 
         $pelicula = Pelicula::findOrFail($id);
@@ -172,5 +202,41 @@ class PeliculaController extends Controller
     public function show($id)
     {
         return redirect()->route('peliculas.index');
+    }
+
+    public function descargarCSV()
+    {
+        if (Auth::user()->rol !== 'administrador') {
+            abort(403, 'No tienes permiso para acceder aquí.');
+        }
+        $peliculas = Pelicula::with('categoria')->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="peliculas.csv"',
+        ];
+
+        $callback = function() use ($peliculas) {
+            // Escribir BOM para UTF-8
+            echo chr(239) . chr(187) . chr(191);
+            $handle = fopen('php://output', 'w');
+            // Cabecera
+            fputcsv($handle, ['Id', 'Título', 'Categoría', 'Director', 'Año', 'Stock', 'Precio'], ';');
+            // Datos
+            foreach ($peliculas as $p) {
+                fputcsv($handle, [
+                    $p->id_pelicula,
+                    $p->titulo,
+                    $p->categoria ? $p->categoria->nombre : '',
+                    $p->director,
+                    $p->anio_estreno,
+                    $p->stock,
+                    $p->precio,
+                ], ';'); // <-- Punto y coma para separar los campos
+            }
+            fclose($handle);
+        };
+
+        return response()->streamDownload($callback, 'peliculas.csv', $headers);
     }
 }

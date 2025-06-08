@@ -28,8 +28,8 @@ export default function AppLayoutUsuario({ children }) {
 
   const handleCloseTarifaModal = () => setShowTarifaModal(false);
 
-  const handleTarifaSubmit = e => {
-    e.preventDefault();
+  function handleTarifaSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
     Swal.fire({
       title: 'Guardando...',
       text: 'Por favor, espera mientras se guarda la tarifa.',

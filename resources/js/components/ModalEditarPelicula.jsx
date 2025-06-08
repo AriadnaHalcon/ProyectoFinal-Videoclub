@@ -89,10 +89,13 @@ export default function ModalEditarPelicula({ categorias }) {
               <div className="mb-3" key={field}>
                 <label className="form-label">{label}</label>
                 <input
-                  type={field === 'precio' ? 'number' : 'text'}
+                  type={field === 'precio' ? 'number' : field === 'anio_estreno' ? 'number' : field === 'stock' ? 'number' : 'text'}
                   className="form-control"
                   value={data[field]}
                   onChange={(e) => setData(field, e.target.value)}
+                  {...(field === 'anio_estreno' ? { min: 1900, max: new Date().getFullYear() } : {})}
+                  {...(field === 'stock' ? { min: 0 } : {})}
+                  {...(field === 'precio' ? { min: 0, step: '0.01' } : {})}
                 />
                 {errors[field] && <div className="text-danger">{errors[field]}</div>}
               </div>
@@ -117,6 +120,7 @@ export default function ModalEditarPelicula({ categorias }) {
               <input
                 type="file"
                 className="form-control"
+                accept="image/*"
                 onChange={(e) => setData('imagen', e.target.files[0])}
               />
               {errors.imagen && <div className="text-danger">{errors.imagen}</div>}

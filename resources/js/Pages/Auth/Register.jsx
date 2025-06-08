@@ -20,6 +20,9 @@ export default function Register({ tarifas = [] }) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [dniValido, setDniValido] = useState(false);
+    const [emailValido, setEmailValido] = useState(true);
+    const [emailDuplicado, setEmailDuplicado] = useState(false);
 
     const togglePasswordVisibility = (type) => {
         if (type === 'password') {
@@ -66,7 +69,9 @@ export default function Register({ tarifas = [] }) {
                             required
                             className="w-full p-2 border rounded"
                         />
-                        <InputError message={errors.name} className="mt-2" />
+                        {errors.name && (
+                            <div style={{ color: 'red', marginTop: 4 }}>{errors.name}</div>
+                        )}
                     </div>
 
                     <div className="input-container">
@@ -75,11 +80,25 @@ export default function Register({ tarifas = [] }) {
                             id="dni"
                             name="dni"
                             value={data.dni}
-                            onChange={(e) => setData('dni', e.target.value)}
+                            onChange={(e) => {
+                                let value = e.target.value.toUpperCase();
+                                value = value.replace(/[^0-9A-Za-z]/g, '');
+                                if (value.length > 9) value = value.slice(0, 9);
+                                setData('dni', value);
+                                setDniValido(/^[0-9]{8}[A-Za-z]$/.test(value));
+                            }}
                             required
+                            maxLength={9}
                             className="w-full p-2 border rounded"
                         />
-                        <InputError message={errors.dni} className="mt-2" />
+                        {!dniValido && data.dni.length === 9 && (
+                            <div style={{ color: 'red', marginTop: 4 }}>
+                                El DNI debe tener 8 números seguidos de una letra (ejemplo: 12345678A).
+                            </div>
+                        )}
+                        {errors.dni && (
+                            <div style={{ color: 'red', marginTop: 4 }}>{errors.dni}</div>
+                        )}
                     </div>
 
                     <div className="input-container">
@@ -92,7 +111,9 @@ export default function Register({ tarifas = [] }) {
                             required
                             className="w-full p-2 border rounded"
                         />
-                        <InputError message={errors.direccion} className="mt-2" />
+                        {errors.direccion && (
+                            <div style={{ color: 'red', marginTop: 4 }}>{errors.direccion}</div>
+                        )}
                     </div>
 
                     <div className="input-container">
@@ -103,29 +124,13 @@ export default function Register({ tarifas = [] }) {
                             value={data.telefono}
                             onChange={(e) => setData('telefono', e.target.value)}
                             required
+                            maxLength={9}
                             className="w-full p-2 border rounded"
                         />
-                        <InputError message={errors.telefono} className="mt-2" />
+                        {errors.telefono && (
+                            <div style={{ color: 'red', marginTop: 4 }}>{errors.telefono}</div>
+                        )}
                     </div>
-
-                    {/* <div className="input-container">
-                        <InputLabel htmlFor="tarifa_id" value="Tarifa" />
-                        <select
-                            id="tarifa_id"
-                            name="tarifa_id"
-                            value={data.tarifa_id}
-                            onChange={(e) => setData('tarifa_id', e.target.value)}
-                            required
-                            className="w-full p-2 border rounded"
-                        >
-                            {tarifas.map((tarifa) => (
-                                <option key={tarifa.id} value={tarifa.id}>
-                                    {tarifa.nombre}
-                                </option>
-                            ))}
-                        </select>
-                        <InputError message={errors.tarifa_id} className="mt-2" />
-                    </div> */}
 
                     <div className="input-container">
                         <InputLabel htmlFor="email" value="Email" />
@@ -134,11 +139,28 @@ export default function Register({ tarifas = [] }) {
                             type="email"
                             name="email"
                             value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
+                            onChange={(e) => {
+                                setData('email', e.target.value);
+                                // Validar formato de email
+                                setEmailValido(/^\S+@\S+\.\S+$/.test(e.target.value));
+                                setEmailDuplicado(false);
+                            }}
                             required
                             className="w-full p-2 border rounded"
                         />
-                        <InputError message={errors.email} className="mt-2" />
+                        {!emailValido && data.email.length > 0 && (
+                            <div style={{ color: 'red', marginTop: 4 }}>
+                                El correo electrónico debe tener un formato válido.
+                            </div>
+                        )}
+                        {errors.email && errors.email.includes('registrado') && (
+                            <div style={{ color: 'red', marginTop: 4 }}>
+                                Este correo electrónico ya está registrado.
+                            </div>
+                        )}
+                        {errors.email && (
+                            <div style={{ color: 'red', marginTop: 4 }}>{errors.email}</div>
+                        )}
                     </div>
 
                     <div className="input-container">
@@ -156,7 +178,9 @@ export default function Register({ tarifas = [] }) {
                             className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} toggle-password`}
                             onClick={() => togglePasswordVisibility('password')}
                         />
-                        <InputError message={errors.password} className="mt-2" />
+                        {errors.password && (
+                            <div style={{ color: 'red', marginTop: 4 }}>{errors.password}</div>
+                        )}
                     </div>
 
                     <div className="input-container">
@@ -174,7 +198,9 @@ export default function Register({ tarifas = [] }) {
                             className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'} toggle-password`}
                             onClick={() => togglePasswordVisibility('confirmPassword')}
                         />
-                        <InputError message={errors.password_confirmation} className="mt-2" />
+                        {errors.password_confirmation && (
+                            <div style={{ color: 'red', marginTop: 4 }}>{errors.password_confirmation}</div>
+                        )}
                     </div>
 
                     <div className="mt-4 flex items-center text-align-center">
@@ -185,7 +211,7 @@ export default function Register({ tarifas = [] }) {
                             ¿Ya estás registrado?
                         </Link>
                     </div>
-                    <button type="submit" style={{ marginTop: '20px' }}>Register</button>
+                    <button type="submit" style={{ marginTop: '20px' }} disabled={!dniValido || !emailValido || processing}>Register</button>
                 </form>
                 {errors.direccion && <div style={{ color: 'red', marginTop: 4 }}>{errors.direccion}</div>}
                 {errors.telefono && <div style={{ color: 'red', marginTop: 4 }}>{errors.telefono}</div>}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { useCarrito } from './Carrito';
 import Carrito from './Carrito';
@@ -10,28 +10,31 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
   const { carrito, removeFromCarrito, clearCarrito } = useCarrito();
   const [showCarritoModal, setShowCarritoModal] = useState(false);
 
+  // Inicializar el dropdown de Bootstrap para el usuario
   useEffect(() => {
-    if (window.bootstrap && dropdownToggleRef.current) {
+    if (dropdownToggleRef.current && window.bootstrap) {
       dropdownInstanceRef.current = new window.bootstrap.Dropdown(dropdownToggleRef.current);
     }
-
     return () => {
-      if (dropdownInstanceRef.current) {
-        dropdownInstanceRef.current.dispose();
-      }
+      if (dropdownInstanceRef.current) dropdownInstanceRef.current.dispose();
     };
   }, []);
 
-  const toggleDropdown = (e) => {
+  const handleDropdownClick = (e) => {
     e.preventDefault();
     if (dropdownInstanceRef.current) {
-      if (dropdownToggleRef.current.getAttribute('aria-expanded') === 'true') {
-        dropdownInstanceRef.current.hide();
-      } else {
-        dropdownInstanceRef.current.show();
-      }
+      dropdownInstanceRef.current.toggle();
     }
   };
+
+  useEffect(() => {
+    if (window.bootstrap) {
+      const collapseEl = document.getElementById('navbarUsuarioResponsive');
+      if (collapseEl) {
+        const bsCollapse = window.bootstrap.Collapse.getOrCreateInstance(collapseEl);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -54,48 +57,78 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
           >
             🎬 Videoclub
           </span>
-          <ul className="navbar-nav ms-auto" style={{ alignItems: 'center' }}>
-            <li className="nav-item me-3">
-              <Link
-                className="nav-link"
-                href="/peliculas-usuario"
-                style={{ color: '#5A3F50', fontWeight: 'bold' }}
-              >
-                Películas
-              </Link>
-            </li>
-            <li className="nav-item me-3">
-              <Link
-                className="nav-link"
-                href="/perfil"
-                style={{ color: '#5A3F50', fontWeight: 'bold' }}
-              >
-                Perfil
-              </Link>
-            </li>
-            <li className="nav-item me-3">
-              <Link
-                className="nav-link"
-                href={route('cliente.misAlquileres')}
-                style={{ color: '#5A3F50', fontWeight: 'bold' }}
-              >
-                Mis alquileres
-              </Link>
-            </li>
-            <li className="nav-item me-3">
-              <Link
-                className="nav-link"
-                href="#"
-                onClick={e => {
-                  e.preventDefault();
-                  onMiTarifaClick();
-                }}
-                style={{ color: '#5A3F50', fontWeight: 'bold', marginLeft: 8 }}
-              >
-                Mi Tarifa
-              </Link>
-            </li>
-            <li className="nav-item dropdown">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarUsuarioResponsive"
+            aria-controls="navbarUsuarioResponsive"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            onClick={e => {
+              const collapse = window.bootstrap?.Collapse.getOrCreateInstance(document.getElementById('navbarUsuarioResponsive'));
+              if (collapse) collapse.toggle();
+            }}
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarUsuarioResponsive">
+            <ul className="navbar-nav ms-auto" style={{ alignItems: 'center' }}>
+              <li className="nav-item me-3">
+                <Link
+                  className="nav-link"
+                  href="/peliculas-usuario"
+                  style={{ color: '#5A3F50', fontWeight: 'bold' }}
+                  onClick={() => {
+                    const collapse = window.bootstrap?.Collapse.getInstance(document.getElementById('navbarUsuarioResponsive'));
+                    if (collapse) collapse.hide();
+                  }}
+                >
+                  Películas
+                </Link>
+              </li>
+              <li className="nav-item me-3">
+                <Link
+                  className="nav-link"
+                  href="/perfil"
+                  style={{ color: '#5A3F50', fontWeight: 'bold' }}
+                  onClick={() => {
+                    const collapse = window.bootstrap?.Collapse.getInstance(document.getElementById('navbarUsuarioResponsive'));
+                    if (collapse) collapse.hide();
+                  }}
+                >
+                  Perfil
+                </Link>
+              </li>
+              <li className="nav-item me-3">
+                <Link
+                  className="nav-link"
+                  href={route('cliente.misAlquileres')}
+                  style={{ color: '#5A3F50', fontWeight: 'bold' }}
+                  onClick={() => {
+                    const collapse = window.bootstrap?.Collapse.getInstance(document.getElementById('navbarUsuarioResponsive'));
+                    if (collapse) collapse.hide();
+                  }}
+                >
+                  Mis alquileres
+                </Link>
+              </li>
+              <li className="nav-item me-3">
+                <Link
+                  className="nav-link"
+                  href="#"
+                  onClick={e => {
+                    e.preventDefault();
+                    onMiTarifaClick();
+                    const collapse = window.bootstrap?.Collapse.getInstance(document.getElementById('navbarUsuarioResponsive'));
+                    if (collapse) collapse.hide();
+                  }}
+                  style={{ color: '#5A3F50', fontWeight: 'bold', marginLeft: 8 }}
+                >
+                  Mi Tarifa
+                </Link>
+              </li>
+              <li className="nav-item dropdown">
               <button
                 ref={dropdownToggleRef}
                 className="nav-link dropdown-toggle btn btn-link"
@@ -112,12 +145,12 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
                   borderRadius: 8,
                   transition: 'background 0.2s',
                 }}
-                onClick={toggleDropdown}
+                onClick={handleDropdownClick}
               >
                 {auth.user ? auth.user.name : 'Usuario'}
               </button>
-              <ul
-                className="dropdown-menu dropdown-menu-end"
+                <ul
+                  className="dropdown-menu dropdown-menu-end"
                 aria-labelledby="navbarDropdownUser"
               >
                 <li>
@@ -143,6 +176,7 @@ const NavbarUsuario = ({ onMiTarifaClick }) => {
               </button>
             </li>
           </ul>
+        </div>
         </div>
       </nav>
 

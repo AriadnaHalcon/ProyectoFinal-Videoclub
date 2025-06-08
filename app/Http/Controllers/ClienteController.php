@@ -122,9 +122,15 @@ class ClienteController extends Controller
         abort(403, 'No tienes permiso para acceder aquí.');
         }
         try {
-            $cliente = Cliente::findOrFail($dni); 
+            $cliente = Cliente::findOrFail($dni);
+            if ($cliente->user_id) {
+                $user = \App\Models\User::find($cliente->user_id);
+                if ($user && $user->rol === 'usuario') {
+                    $user->delete();
+                }
+            }
             $cliente->delete(); 
-            return redirect()->route('clientes.index')->with('success', 'Cliente eliminado exitosamente.');
+            return redirect()->route('clientes.index')->with('success', 'Cliente y usuario eliminados exitosamente.');
         } catch (\Exception $e) {
             return redirect()->route('clientes.index')->with('error', 'Error al eliminar el cliente.');
         }
@@ -160,7 +166,39 @@ class ClienteController extends Controller
         return $dompdf->stream('clientes.pdf');
     }
 
-   public function perfil()
+    public function descargarCSV()
+    {
+        if (Auth::user()->rol !== 'administrador') {
+            abort(403, 'No tienes permiso para acceder aquí.');
+        }
+        $clientes = Cliente::with('tarifa')->get();
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="clientes.csv"',
+        ];
+        $callback = function() use ($clientes) {
+            // Escribir BOM para UTF-8
+            echo chr(239) . chr(187) . chr(191);
+            $handle = fopen('php://output', 'w');
+            // Cabezera
+            fputcsv($handle, ['DNI', 'Nombre', 'Dirección', 'Teléfono', 'Email', 'Tarifa'], ';');
+            // Datos
+            foreach ($clientes as $c) {
+                fputcsv($handle, [
+                    $c->dni,
+                    $c->nombre,
+                    $c->direccion,
+                    $c->telefono,
+                    $c->email,
+                    $c->tarifa ? $c->tarifa->nombre : '',
+                ], ';'); // <-- Punto y coma para separar los campos
+            }
+            fclose($handle);
+        };
+        return response()->streamDownload($callback, 'clientes.csv', $headers);
+    }
+
+    public function perfil()
     {
         $user = Auth::user();
         $cliente = \App\Models\Cliente::where('user_id', $user->id)->first();
